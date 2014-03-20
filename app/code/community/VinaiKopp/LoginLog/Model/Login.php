@@ -40,8 +40,10 @@ class VinaiKopp_LoginLog_Model_Login
     protected function _getCurrentDateTime()
     {
         if (! $this->_dateTime) {
+            // @codeCoverageIgnoreStart
             return Varien_Date::now();
         }
+        // @codeCoverageIgnoreEnd
         return $this->_dateTime;
     }
 

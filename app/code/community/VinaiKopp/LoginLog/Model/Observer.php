@@ -32,8 +32,10 @@ class VinaiKopp_LoginLog_Model_Observer
     public function getLoginLog()
     {
         if (!$this->_login) {
+            // @codeCoverageIgnoreStart
             $this->_login = Mage::getModel('vinaikopp_loginlog/login');
         }
+        // @codeCoverageIgnoreEnd
         return $this->_login;
     }
 
@@ -43,8 +45,10 @@ class VinaiKopp_LoginLog_Model_Observer
     public function getCoreHttpHelper()
     {
         if (!$this->_coreHttpHelper) {
+            // @codeCoverageIgnoreStart
             $this->_coreHttpHelper = Mage::helper('core/http');
         }
+        // @codeCoverageIgnoreEnd
         return $this->_coreHttpHelper;
     }
 
@@ -55,11 +59,12 @@ class VinaiKopp_LoginLog_Model_Observer
     {
         /** @var Mage_Customer_Model_Customer $customer */
         $customer = $args->getCustomer();
+        $helper = $this->getCoreHttpHelper();
         $this->getLoginLog()
             ->setCustomerId($customer->getId())
-            ->setIp($this->getCoreHttpHelper()->getRemoteAddr())
+            ->setIp($helper->getRemoteAddr())
             ->setEmail($customer->getEmail())
-            ->setUserAgent($this->getCoreHttpHelper()->getHttpUserAgent())
+            ->setUserAgent($helper->getHttpUserAgent())
             ->save();    
     }
 } 
