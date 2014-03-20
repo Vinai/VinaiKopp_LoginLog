@@ -33,6 +33,19 @@
             </vinaikopp_loginlog_setup>
         </resources>
     </global>
+    <frontend>
+        <events>
+            <customer_login>
+                <observers>
+                    <vinaikopp_loginlog>
+                        <type>model</type>
+                        <class>vinaikopp_loginlog/observer</class>
+                        <method>customerLogin</method>
+                    </vinaikopp_loginlog>
+                </observers>
+            </customer_login>
+        </events>
+    </frontend>
     <phpunit>
         <suites>
             <modules>

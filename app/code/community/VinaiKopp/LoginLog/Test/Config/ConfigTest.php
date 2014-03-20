@@ -43,4 +43,12 @@ class VinaiKopp_LoginLog_Test_Config_ConfigTest
             'vinaikopp_loginlog/login_collection', 'VinaiKopp_LoginLog_Model_Resource_Login_Collection'
         );
     }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveACustomerLoginObserver()
+    {
+        $this->assertEventObserverDefined('frontend', 'customer_login', 'vinaikopp_loginlog/observer', 'customerLogin');
+    }
 } 
