@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <VinaiKopp_LoginLog>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Core/>
+                <Mage_Customer/>
+                <Mage_Adminhtml/>
+            </depends>
+        </VinaiKopp_LoginLog>
+    </modules>
+</config>
