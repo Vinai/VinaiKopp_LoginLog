@@ -51,4 +51,30 @@ class VinaiKopp_LoginLog_Test_Config_ConfigTest
     {
         $this->assertEventObserverDefined('frontend', 'customer_login', 'vinaikopp_loginlog/observer', 'customerLogin');
     }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAnAdminhtmlLayout()
+    {
+        $this->assertLayoutFileDefined('adminhtml', 'vinaikopp/loginlog.xml');
+        $this->assertLayoutFileExists('adminhtml', 'vinaikopp/loginlog.xml');
+        $this->assertLayoutFileExistsInTheme('adminhtml', 'vinaikopp/loginlog.xml', 'default', 'default');
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveABlockAlias()
+    {
+        $this->assertBlockAlias('vinaikopp_loginlog/login_log', 'VinaiKopp_LoginLog_Block_Login_Log');
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAnAdminRoute()
+    {
+        $this->assertRouteModule('adminhtml', 'VinaiKopp_LoginLog_Adminhtml', 'admin');
+    }
 } 

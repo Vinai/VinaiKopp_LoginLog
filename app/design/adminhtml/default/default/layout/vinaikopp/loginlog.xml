@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config>
+    <adminhtml_loginlog_index>
+        <reference name="content">
+            <block name="vinaikopp.loginlog.list"
+                   type="vinaikopp_loginlog/adminhtml_loginLog_list"/>
+        </reference>
+    </adminhtml_loginlog_index>
+    <adminhtml_loginlog_grid>
+        <block name="vinaikopp.loginlog.grid"
+               type="vinaikopp_loginlog/adminhtml_loginLog_list_grid"
+               output="toHtml"/>
+    </adminhtml_loginlog_grid>
+</config>

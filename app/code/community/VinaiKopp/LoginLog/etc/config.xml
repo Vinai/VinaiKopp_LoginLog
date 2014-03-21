@@ -25,6 +25,11 @@
                 <class>VinaiKopp_LoginLog_Helper</class>
             </vinaikopp_loginlog>
         </helpers>
+        <blocks>
+            <vinaikopp_loginlog>
+                <class>VinaiKopp_LoginLog_Block</class>
+            </vinaikopp_loginlog>
+        </blocks>
         <resources>
             <vinaikopp_loginlog_setup>
                 <setup>
@@ -46,6 +51,26 @@
             </customer_login>
         </events>
     </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <vinaikopp_loginlog before="Mage_Adminhtml">VinaiKopp_LoginLog_Adminhtml</vinaikopp_loginlog>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <vinaikopp_loginlog>
+                    <file>vinaikopp/loginlog.xml</file>
+                </vinaikopp_loginlog>
+            </updates>
+        </layout>
+    </adminhtml>
     <phpunit>
         <suites>
             <modules>

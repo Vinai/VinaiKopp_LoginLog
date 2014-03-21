@@ -1,3 +1,4 @@
 
 app/etc/modules/VinaiKopp_LoginLog.xml app/etc/modules/VinaiKopp_LoginLog.xml
 app/code/community/VinaiKopp/LoginLog app/code/community/VinaiKopp/LoginLog
+app/design/adminhtml/default/default/layout/vinaikopp/loginlog.xml app/design/adminhtml/default/default/layout/vinaikopp/loginlog.xml

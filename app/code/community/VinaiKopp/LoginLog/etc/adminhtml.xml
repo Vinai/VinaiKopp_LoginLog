@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <customer>
+            <children>
+                <login_log translate="title" module="vinaikopp_loginlog">
+                    <title>Login Log</title>
+                    <sort_order>300</sort_order>
+                    <action>adminhtml/loginlog</action>
+                </login_log>
+            </children>
+        </customer>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <customer>
+                        <children>
+                            <login_log translate="title" module="vinaikopp_loginlog">
+                                <title>Login Log</title>
+                                <sort_order>300</sort_order>
+                            </login_log>
+                        </children>
+                    </customer>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
