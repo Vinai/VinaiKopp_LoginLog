@@ -69,6 +69,9 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
         $this->addColumn('user_agent', array(
             'header' => $this->__('User Agent'),
             'index' => 'user_agent',
+            'renderer' => 'adminhtml/widget_grid_column_renderer_longtext',
+            'string_limit' => 150,
+            'escape' => true,
         ));
         
         $this->addExportType('*/*/exportCsv', $this->__('CSV'));
