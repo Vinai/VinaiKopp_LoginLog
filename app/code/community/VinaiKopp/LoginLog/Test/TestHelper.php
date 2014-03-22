@@ -18,7 +18,11 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-
+/**
+ * Class VinaiKopp_LoginLog_Test_TestHelper
+ * 
+ * @codeCoverageIgnore
+ */
 class VinaiKopp_LoginLog_Test_TestHelper
     extends EcomDev_PHPUnit_Test_Case
 {
