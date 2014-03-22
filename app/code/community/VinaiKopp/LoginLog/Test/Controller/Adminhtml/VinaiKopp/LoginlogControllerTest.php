@@ -18,7 +18,11 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-
+/**
+ * Class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerTest
+ * 
+ * @coversDefaultClass VinaiKopp_LoginLog_Adminhtml_LoginlogController
+ */
 class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerTest
     extends EcomDev_PHPUnit_Test_Case_Controller
 {
@@ -76,6 +80,9 @@ class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerT
         $this->assertTrue($result);
     }
 
+    /**
+     * @covers ::indexAction
+     */
     public function testIndexAction()
     {
         $this->dispatch('adminhtml/loginlog/index');
@@ -90,6 +97,10 @@ class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerT
         $this->assertInstanceOf('Mage_Adminhtml_Block_Widget_Grid', $child);
     }
 
+
+    /**
+     * @covers ::gridAction
+     */
     public function testGridAction()
     {
         $this->dispatch('adminhtml/loginlog/grid');
@@ -99,7 +110,10 @@ class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerT
         $this->assertLayoutBlockCreated('vinaikopp.loginlog.grid');
         $this->assertLayoutBlockInstanceOf('vinaikopp.loginlog.grid', 'VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid');
     }
-    
+
+    /**
+     * @covers ::deleteMassAction
+     */
     public function testDeleteMassAction()
     {
         $this->app()->getRequest()->setPost('logins', array(1, 2, 3));
@@ -123,6 +137,7 @@ class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerT
 
     /**
      * @depends testExportCsvActionExists
+     * @covers ::exportCsvAction
      * @throws Exception
      * @throws Zend_Controller_Response_Exception
      */
@@ -160,6 +175,7 @@ class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerT
 
     /**
      * @depends testExportXmlActionExists
+     * @covers ::exportXmlAction
      * @throws Exception
      * @throws Zend_Controller_Response_Exception
      */
