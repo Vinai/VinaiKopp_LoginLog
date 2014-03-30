@@ -20,7 +20,7 @@
 
 
 class VinaiKopp_LoginLog_Test_Config_AdminhtmlTest
-    extends EcomDev_PHPUnit_Test_Case_Config
+    extends PHPUnit_Framework_TestCase
 {
     protected function getFile()
     {
