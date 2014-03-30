@@ -37,12 +37,25 @@
                 <children>
                     <customer>
                         <children>
-                            <login_log translate="title" module="vinaikopp_loginlog">
-                                <title>Login Log</title>
+                            <login_log translate="title"
+                                       module="vinaikopp_loginlog">
+                                <title>Customer Login Log</title>
                                 <sort_order>300</sort_order>
                             </login_log>
                         </children>
                     </customer>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <vinaikopp_loginlog>
+                                        <title>Customer Login Log</title>
+                                        <sort_order>502</sort_order>
+                                    </vinaikopp_loginlog>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
                 </children>
             </admin>
         </resources>

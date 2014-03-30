@@ -83,8 +83,18 @@ class VinaiKopp_LoginLog_Test_Config_AdminhtmlTest
     /**
      * @test
      */
-    public function itShouldAddAnAclEntry()
+    public function itShouldAddAMenuAclEntry()
     {
         $this->assertAclDefined('customer/login_log');
     }
+
+    /**
+     * @test
+     */
+    public function itShouldAddASystemConfigAclEntry()
+    {
+        $this->assertAclDefined('system/config/vinaikopp_loginlog');
+    }
+    
+    
 } 
