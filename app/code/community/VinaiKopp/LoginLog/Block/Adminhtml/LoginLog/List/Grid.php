@@ -1,4 +1,5 @@
 <?php
+
 /**
  * NOTICE OF LICENSE
  *
@@ -17,7 +18,6 @@
  * @copyright  Copyright (c) 2014 Vinai Kopp http://netzarbeiter.com
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
     extends Mage_Adminhtml_Block_Widget_Grid
 {
@@ -27,7 +27,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
         $this->setDefaultSort('id');
         $this->setDefaultDir('desc');
         $this->setUseAjax(true);
-        return parent::_construct();
+        parent::_construct();
     }
 
     /**
@@ -52,6 +52,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
 
         return parent::_prepareCollection();
     }
+
     /**
      * Prepare grid columns
      *
@@ -66,7 +67,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
             'index' => 'id',
             'type' => 'number'
         ));
-        
+
         $this->addColumn('login_at', array(
             'header' => $this->__('Date'),
             'index' => 'login_at',
@@ -90,7 +91,29 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
             'string_limit' => 150,
             'escape' => true,
         ));
-        
+
+        if (!$this->_isExport) {
+            $this->addColumn('action',
+                array(
+                    'header' => $this->__('Action'),
+                    'width' => '150px',
+                    'type' => 'action',
+                    'getter' => 'getId',
+                    'actions' => array(
+                        array(
+                            'caption' => Mage::helper('catalog')->__('Lookup'),
+                            'url' => array(
+                                'base' => '*/*/lookup',
+                                'params' => array()
+                            ),
+                            'field' => 'id'
+                        )
+                    ),
+                    'filter' => false,
+                    'sortable' => false
+                ));
+        }
+
         $this->addExportType('*/*/exportCsv', $this->__('CSV'));
         $this->addExportType('*/*/exportXml', $this->__('Excel XML'));
 
