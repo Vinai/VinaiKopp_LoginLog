@@ -151,8 +151,11 @@ class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerT
         
         set_exit_overload(function() {});
         try {
+            ob_start();
             $this->dispatch('adminhtml/loginlog/exportCsv');
+            ob_end_clean();
         } catch (Zend_Controller_Response_Exception $e) {
+            ob_end_clean();
             // Catch only headers already sent exception here
             if ($e->getMessage() != 'Cannot send headers; headers already sent') {
                 throw $e;
@@ -189,8 +192,11 @@ class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerT
         
         set_exit_overload(function() {});
         try {
+            ob_start();
             $this->dispatch('adminhtml/loginlog/exportXml');
+            ob_end_clean();
         } catch (Zend_Controller_Response_Exception $e) {
+            ob_end_clean();
             // Catch only headers already sent exception here
             if ($e->getMessage() != 'Cannot send headers; headers already sent') {
                 throw $e;
