@@ -92,10 +92,10 @@
         </layout>
     </adminhtml>
     <phpunit>
-        <suites>
+        <suite>
             <modules>
                 <VinaiKopp_LoginLog/>
             </modules>
-        </suites>
+        </suite>
     </phpunit>
 </config>
