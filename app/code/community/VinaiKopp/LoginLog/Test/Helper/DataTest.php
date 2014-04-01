@@ -70,26 +70,25 @@ class VinaiKopp_LoginLog_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
 
     /**
      * @test
+     * @dataProvider ipMaskDataProvider
      */
-    public function itShouldNotMaskIp()
+    public function itShouldMaskTheIpAddress($ip, $maskIpSetting, $expected)
     {
-        $ip = '192.168.0.1';
-        $mockStore = $this->getStoreMock(0);
+        $mockStore = $this->getStoreMock($maskIpSetting);
         $instance = $this->getInstance($mockStore);
         $result   = $instance->maskIpAddress($ip);
-        $this->assertEquals($ip, $result);
+        $this->assertEquals($expected, $result);
     }
-
-    /**
-     * @test
-     */
-    public function itShouldMaskIpTwoBytes()
+    
+    public function ipMaskDataProvider()
     {
-        $ip = '192.168.0.1';
-        $mockStore = $this->getStoreMock(2);
-        $instance = $this->getInstance($mockStore);
-        $result   = $instance->maskIpAddress($ip);
-        $this->assertEquals('192.168.xxx.xxx', $result);
+        return array(
+            array('192.168.0.1', 0, '192.168.0.1'),
+            array('192.168.0.1', 1, '192.168.0.xxx'),
+            array('192.168.0.1', 2, '192.168.xxx.xxx'),
+            array('192.168.0.1', 3, '192.xxx.xxx.xxx'),
+            array('192.168.0.1', 4, 'xxx.xxx.xxx.xxx'),
+        );
     }
 
     /**
