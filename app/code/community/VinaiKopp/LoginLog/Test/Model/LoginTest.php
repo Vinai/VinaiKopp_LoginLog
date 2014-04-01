@@ -136,4 +136,25 @@ class VinaiKopp_LoginLog_Test_Model_LoginTest
         $instance->setId(1);
         $instance->afterCommitCallback();
     }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAMethodRegisterLogout()
+    {
+        $this->assertTrue(method_exists($this->class, 'registerLogout'));
+    }
+
+    /**
+     * @test
+     * @depends itShouldHaveAMethodRegisterLogout
+     */
+    public function itShouldSetTheLogoutDate()
+    {
+        $now = '2014-01-01 12:12:12';
+        $instance = $this->getInstance($now);
+        $this->assertNull($instance->getLogoutAt());
+        $instance->registerLogout();
+        $this->assertEquals($now, $instance->getLogoutAt());
+    }
 } 

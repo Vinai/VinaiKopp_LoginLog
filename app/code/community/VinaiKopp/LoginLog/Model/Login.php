@@ -147,4 +147,13 @@ class VinaiKopp_LoginLog_Model_Login
         $this->getSession()->setData('vinaikopp_loginlog_id', $this->getId());
         return parent::afterCommitCallback();
     }
+
+    /**
+     * @return VinaiKopp_LoginLog_Model_Login
+     */
+    public function registerLogout()
+    {
+        $this->setLogoutAt($this->_getCurrentDateTime());
+        return $this;
+    }
 }
