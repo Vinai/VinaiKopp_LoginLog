@@ -202,8 +202,37 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_List_GridTest
         $mockMassAction->expects($this->once())
             ->method('addItem')
             ->with('delete');
-        
+
         $block->setLayout($stubLayout);
         $block->toHtml();
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldLinkRowsToCustomerPages()
+    {
+        $this->prepareEnvironmentForGrid();
+        
+        $expected = 'http://example.com/admin/customer/edit/id/1';
+        
+        /** @var PHPUnit_Framework_MockObject_MockObject $mockUrl */
+        $mockUrl = Mage::getModel('adminhtml/url');
+        $mockUrl->expects($this->once())
+            ->method('getUrl')
+            ->with('*/customer/edit', array('id' => 1))
+            ->will($this->returnValue($expected));
+        
+        $mockLogin = $this->getMock(
+            'VinaiKopp_LoginLog_Model_Login', array('getCustomerId')
+        );
+        $mockLogin->expects($this->once())
+            ->method('getCustomerId')
+            ->will($this->returnValue(1));
+        
+        $block = $this->getInstance();
+        $result = $block->getRowUrl($mockLogin);
+        
+        $this->assertEquals($expected, $result);
     }
 }
