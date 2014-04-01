@@ -56,8 +56,8 @@ class VinaiKopp_LoginLog_Test_Model_Resource_Login_CollectionTest
         $columnName, Varien_Db_Select $select, $message = '', $assertPresent = true
     )
     {
-        $columns = $select->getPart('columns');
         $found = false;
+        $columns = $select->getPart('columns');
         foreach ($columns as $column) {
             if (isset($column[2]) && $column[2] === $columnName) {
                 $found = true;
@@ -66,7 +66,12 @@ class VinaiKopp_LoginLog_Test_Model_Resource_Login_CollectionTest
         }
         if ($found !== $assertPresent) {
             if (! $message) {
-                $message = sprintf('Column "%s" not set on select', $columnName);
+                if ($assertPresent) {
+                    $message = 'Column "%s" not present on select';
+                } else {
+                    $message = 'Column "%s" present on select';
+                }
+                $message = sprintf($message, $columnName);
             }
             $this->fail($message);
         }
