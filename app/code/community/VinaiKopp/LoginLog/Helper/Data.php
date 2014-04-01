@@ -26,7 +26,7 @@ class VinaiKopp_LoginLog_Helper_Data
      *
      * @return mixed
      */
-    public function maskIPAddress($ipAddress)
+    public function maskIpAddress($ipAddress)
     {
         if (FALSE === $this->_isIP($ipAddress)) {
             return $ipAddress;
@@ -48,7 +48,7 @@ class VinaiKopp_LoginLog_Helper_Data
      *
      * @return bool
      */
-    protected function _isIP($ip)
+    protected function _isIp($ip)
     {
         return FALSE !== filter_var($ip, FILTER_VALIDATE_IP);
     }

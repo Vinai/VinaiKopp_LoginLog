@@ -49,9 +49,9 @@ class VinaiKopp_LoginLog_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
     /**
      * @test
      */
-    public function itShouldHaveAMethodMaskIPAddress()
+    public function itShouldHaveAMethodMaskIpAddress()
     {
-        $this->assertTrue(is_callable(array($this->class, 'maskIPAddress')));
+        $this->assertTrue(is_callable(array($this->class, 'maskIpAddress')));
     }
 
     /**
@@ -61,7 +61,7 @@ class VinaiKopp_LoginLog_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
      */
     public function itShouldNotMaskIp($ip)
     {
-        $result   = $this->getInstance()->maskIPAddress($ip);
+        $result   = $this->getInstance()->maskIpAddress($ip);
         $expected = $this->expected($ip)->getData('0');
         $this->assertEquals($expected, $result);
     }
@@ -73,7 +73,7 @@ class VinaiKopp_LoginLog_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
      */
     public function itShouldMaskIpTwoBytes($ip)
     {
-        $result   = $this->getInstance()->maskIPAddress($ip);
+        $result   = $this->getInstance()->maskIpAddress($ip);
         $expected = $this->expected($ip)->getData('0');
         $this->assertEquals($expected, $result);
     }
