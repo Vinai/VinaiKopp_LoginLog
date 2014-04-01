@@ -1,5 +1,4 @@
 <?php
-
 /**
  * NOTICE OF LICENSE
  *
@@ -18,23 +17,14 @@
  * @copyright  Copyright (c) 2014 Vinai Kopp http://netzarbeiter.com
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VinaiKopp_LoginLog_Model_Resource_Login_Collection
-    extends Mage_Core_Model_Resource_Db_Collection_Abstract
-{
-    protected function _construct()
-    {
-        $this->_init('vinaikopp_loginlog/login');
-    }
 
-    /**
-     * @return $this
-     */
-    public function addDuration()
-    {
-        $this->addExpressionFieldToSelect('duration', 'TIMEDIFF({{logged_out_at}},{{login_at}})', array(
-            'login_at'      => 'login_at',
-            'logged_out_at' => 'logged_out_at',
-        ));
-        return $this;
-    }
-}
+/** @var $installer Mage_Core_Model_Resource_Setup */
+$installer = $this;
+
+$installer->startSetup();
+
+$tableName = $installer->getTable('vinaikopp_loginlog/login_log');
+
+$installer->getConnection()->addColumn($tableName, 'logged_out_at', "datetime NULL DEFAULT NULL COMMENT 'Logged out at'");
+
+$installer->endSetup();

@@ -26,7 +26,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
         $this->setId('vinaikopp_loginlog');
         $this->setDefaultSort('id');
         $this->setDefaultDir('desc');
-        $this->setUseAjax(true);
+        $this->setUseAjax(TRUE);
         parent::_construct();
     }
 
@@ -37,7 +37,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
      */
     public function getGridUrl()
     {
-        return $this->getUrl('*/*/grid', array('_current' => true));
+        return $this->getUrl('*/*/grid', array('_current' => TRUE));
     }
 
     /**
@@ -48,6 +48,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
     protected function _prepareCollection()
     {
         $collection = Mage::getResourceModel('vinaikopp_loginlog/login_collection');
+        $collection->addDuration();
         $this->setCollection($collection);
 
         return parent::_prepareCollection();
@@ -61,56 +62,67 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
     protected function _prepareColumns()
     {
         $this->addColumn('id', array(
-            'header' => $this->__('ID'),
-            'sortable' => true,
-            'width' => '60px',
-            'index' => 'id',
-            'type' => 'number'
+            'header'   => $this->__('ID'),
+            'sortable' => TRUE,
+            'width'    => '40px',
+            'index'    => 'id',
+            'type'     => 'number'
         ));
 
         $this->addColumn('login_at', array(
             'header' => $this->__('Date'),
-            'index' => 'login_at',
-            'type' => 'datetime'
+            'index'  => 'login_at',
+            'type'   => 'datetime'
+        ));
+
+        $this->addColumn('logged_out_at', array(
+            'header' => $this->__('Logout'),
+            'index'  => 'logged_out_at',
+            'type'   => 'datetime'
+        ));
+
+        $this->addColumn('duration', array(
+            'header' => $this->__('Duration (hh:mm:ss)'),
+            'index'  => 'duration',
         ));
 
         $this->addColumn('email', array(
             'header' => $this->__('Customer Email'),
-            'index' => 'email',
+            'index'  => 'email',
         ));
 
         $this->addColumn('ip', array(
             'header' => $this->__('IP'),
-            'index' => 'ip',
+            'index'  => 'ip',
         ));
 
         $this->addColumn('user_agent', array(
-            'header' => $this->__('User Agent'),
-            'index' => 'user_agent',
-            'renderer' => 'adminhtml/widget_grid_column_renderer_longtext',
+            'header'       => $this->__('User Agent'),
+            'index'        => 'user_agent',
+            'renderer'     => 'adminhtml/widget_grid_column_renderer_longtext',
             'string_limit' => 150,
-            'escape' => true,
+            'escape'       => TRUE,
         ));
 
         if (!$this->_isExport) {
             $this->addColumn('action',
                 array(
-                    'header' => $this->__('Action'),
-                    'width' => '150px',
-                    'type' => 'action',
-                    'getter' => 'getId',
-                    'actions' => array(
+                    'header'   => $this->__('Action'),
+                    'width'    => '150px',
+                    'type'     => 'action',
+                    'getter'   => 'getId',
+                    'actions'  => array(
                         array(
                             'caption' => Mage::helper('catalog')->__('Lookup'),
-                            'url' => array(
-                                'base' => '*/*/lookup',
+                            'url'     => array(
+                                'base'   => '*/*/lookup',
                                 'params' => array()
                             ),
-                            'field' => 'id'
+                            'field'   => 'id'
                         )
                     ),
-                    'filter' => false,
-                    'sortable' => false
+                    'filter'   => FALSE,
+                    'sortable' => FALSE
                 ));
         }
 
@@ -127,9 +139,19 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
 
         $this->getMassactionBlock()->addItem('delete', array(
             'label' => $this->__('Delete'),
-            'url' => $this->getUrl('*/*/deleteMass')
+            'url'   => $this->getUrl('*/*/deleteMass')
         ));
 
         return parent::_prepareMassaction();
     }
-} 
+
+    /**
+     * @param Mage_Catalog_Model_Product|Varien_Object
+     *
+     * @return string
+     */
+    public function getRowUrl($item)
+    {
+        return $this->getUrl('*/customer/edit', array('id' => $item->getCustomerId()));
+    }
+}

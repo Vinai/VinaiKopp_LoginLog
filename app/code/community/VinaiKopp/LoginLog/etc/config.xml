@@ -22,7 +22,7 @@
 <config>
     <modules>
         <VinaiKopp_LoginLog>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </VinaiKopp_LoginLog>
     </modules>
     <global>
@@ -69,6 +69,15 @@
                     </vinaikopp_loginlog>
                 </observers>
             </customer_login>
+            <customer_logout>
+                <observers>
+                    <vinaikopp_loginlog>
+                        <type>model</type>
+                        <class>vinaikopp_loginlog/observer</class>
+                        <method>customerLogout</method>
+                    </vinaikopp_loginlog>
+                </observers>
+            </customer_logout>
         </events>
     </frontend>
     <admin>

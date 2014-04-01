@@ -27,6 +27,8 @@
  * @method VinaiKopp_LoginLog_Model_Login setUserAgent(string $value)
  * @method string getLoginAt()
  * @method VinaiKopp_LoginLog_Model_Login setLoginAt(string $value)
+ * @method string getLoggedOutAt()
+ * @method VinaiKopp_LoginLog_Model_Login setLoggedOutAt(string $value)
  * @method int getCustomerId()
  * @method VinaiKopp_LoginLog_Model_Login setCustomerId(int $value)
  * @method string getIp()
@@ -81,5 +83,14 @@ class VinaiKopp_LoginLog_Model_Login
         $this->setData('ip', Mage::helper('vinaikopp_loginlog')->maskIPAddress($this->getData('ip')));
 
         return parent::_beforeSave();
+    }
+
+    /**
+     * @return Mage_Core_Model_Abstract
+     */
+    public function afterCommitCallback()
+    {
+        Mage::getSingleton('customer/session')->setVinaiKoppLoginLogId($this->getId());
+        return parent::afterCommitCallback();
     }
 }

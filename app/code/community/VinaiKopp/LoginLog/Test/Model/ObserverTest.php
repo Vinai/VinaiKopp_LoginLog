@@ -1,4 +1,5 @@
 <?php
+
 /**
  * NOTICE OF LICENSE
  *
@@ -17,25 +18,24 @@
  * @copyright  Copyright (c) 2014 Vinai Kopp http://netzarbeiter.com
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-
 class VinaiKopp_LoginLog_Test_Model_ObserverTest
     extends EcomDev_PHPUnit_Test_Case
 {
     protected $class = 'VinaiKopp_LoginLog_Model_Observer';
-    
+
     /**
      * @return VinaiKopp_LoginLog_Model_Observer
      */
     public function getInstance()
     {
         $mockLoginLog = $this->getModelMock('vinaikopp_loginlog/login', array(
-            'setCustomerId', 'setEmail', 'setIp', 'setUserAgent', 'setLoginAt', 'save'
+            'setCustomerId', 'setEmail', 'setIp', 'setUserAgent', 'setLoginAt', 'save', 'setLoggedOutAt'
         ));
-        
+
         $mockHttpHelper = $this->getHelperMock('core/http');
-        
-        $instance = new $this->class($mockLoginLog, $mockHttpHelper);
+        $sessionMock    = $this->mockSession('customer/session', array('getVinaiKoppLoginLogId'));
+
+        $instance = new $this->class($mockLoginLog, $mockHttpHelper, $sessionMock);
 
         return $instance;
     }
@@ -54,6 +54,14 @@ class VinaiKopp_LoginLog_Test_Model_ObserverTest
     public function itShouldHaveAMethodCustomerLogin()
     {
         $this->assertTrue(is_callable(array($this->class, 'customerLogin')));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAMethodcustomerLogout()
+    {
+        $this->assertTrue(is_callable(array($this->class, 'customerLogout')));
     }
 
     /**
@@ -95,7 +103,7 @@ class VinaiKopp_LoginLog_Test_Model_ObserverTest
             ->method('getHttpUserAgent')
             ->with()
             ->will($this->returnValue('TestDummyAgent'));
-        
+
         $mockCustomer = $this->getModelMock('customer/customer', array('getId', 'getEmail'));
         $mockCustomer->expects($this->once())
             ->method('getId')
@@ -105,13 +113,60 @@ class VinaiKopp_LoginLog_Test_Model_ObserverTest
             ->method('getEmail')
             ->with()
             ->will($this->returnValue('test@example.com'));
-        
+
         $mockEvent = $this->getMock('Varien_Event_Observer', array('getCustomer'));
         $mockEvent->expects($this->once())
             ->method('getCustomer')
             ->with()
             ->will($this->returnValue($mockCustomer));
-        
+
         $model->customerLogin($mockEvent);
     }
-} 
+
+    /**
+     * @test
+     */
+    public function itShouldLogCustomerLogouts()
+    {
+        $model = $this->getInstance();
+        /** @var EcomDev_PHPUnit_Mock_Proxy $mockLoginLog */
+        $mockLoginLog = $model->getLoginLog();
+        $mockLoginLog->expects($this->once())
+            ->method('setLoggedOutAt')
+            ->with(Varien_Date::now())
+            ->will($this->returnSelf());
+        $mockLoginLog->expects($this->once())
+            ->method('load')
+            ->with(815)
+            ->will($this->returnSelf());
+        $mockLoginLog->expects($this->once())
+            ->method('save')
+            ->with()
+            ->will($this->returnSelf());
+
+        $mockSession = $model->getSession();
+        $mockSession->expects($this->once())
+            ->method('getVinaiKoppLoginLogId')
+            ->with()
+            ->will($this->returnValue(815));
+
+        $mockCustomer = $this->getModelMock('customer/customer', array('getId', 'getEmail'));
+        $mockCustomer->expects($this->once())
+            ->method('getId')
+            ->with()
+            ->will($this->returnValue(1));
+
+        $mockCustomer->expects($this->once())
+            ->method('getEmail')
+            ->with()
+            ->will($this->returnValue('test@example.com'));
+
+        $mockEvent = $this->getMock('Varien_Event_Observer', array('getCustomer'));
+        $mockEvent->expects($this->once())
+            ->method('getCustomer')
+            ->with()
+            ->will($this->returnValue($mockCustomer));
+
+        $model->customerLogout($mockEvent);
+    }
+}

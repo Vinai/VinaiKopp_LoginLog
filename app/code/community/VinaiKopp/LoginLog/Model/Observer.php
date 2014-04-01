@@ -1,4 +1,5 @@
 <?php
+
 /**
  * NOTICE OF LICENSE
  *
@@ -17,8 +18,6 @@
  * @copyright  Copyright (c) 2014 Vinai Kopp http://netzarbeiter.com
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-
 class VinaiKopp_LoginLog_Model_Observer
 {
     /**
@@ -32,16 +31,22 @@ class VinaiKopp_LoginLog_Model_Observer
     protected $_coreHttpHelper;
 
     /**
-     * @param VinaiKopp_LoginLog_Model_Login $login
-     * @param Mage_Core_Helper_Http $httpHelper
+     * @var Mage_Customer_Model_Session
      */
-    public function __construct($login = null, $httpHelper = null)
+    protected $_customerSession = NULL;
+
+    /**
+     * @param VinaiKopp_LoginLog_Model_Login $login
+     * @param Mage_Core_Helper_Http          $httpHelper
+     * @param Mage_Customer_Model_Session    $customerSession
+     */
+    public function __construct($login = NULL, $httpHelper = NULL, $customerSession = NULL)
     {
-        if ($login) {
+        if (NULL !== $login) {
             $this->_login = $login;
         }
-
-        $this->_coreHttpHelper = $httpHelper;
+        $this->_coreHttpHelper  = $httpHelper;
+        $this->_customerSession = $customerSession;
     }
 
     /**
@@ -77,12 +82,41 @@ class VinaiKopp_LoginLog_Model_Observer
     {
         /** @var Mage_Customer_Model_Customer $customer */
         $customer = $args->getCustomer();
-        $helper = $this->getCoreHttpHelper();
+        $helper   = $this->getCoreHttpHelper();
         $this->getLoginLog()
             ->setCustomerId($customer->getId())
             ->setIp($helper->getRemoteAddr())
             ->setEmail($customer->getEmail())
             ->setUserAgent($helper->getHttpUserAgent())
             ->save();
+    }
+
+    /**
+     * @param Varien_Event_Observer $args
+     *
+     * @return null
+     */
+    public function customerLogout(Varien_Event_Observer $args)
+    {
+        $logId = (int)$this->getSession()->getVinaiKoppLoginLogId();
+        if (0 === $logId) {
+            return NULL;
+        }
+        $this->getLoginLog()
+            ->load($logId)
+            ->setLoggedOutAt(Varien_Date::now())
+            ->save();
+        return NULL;
+    }
+
+    /**
+     * @return Mage_Customer_Model_Session
+     */
+    public function getSession()
+    {
+        if (NULL === $this->_customerSession) {
+            $this->_customerSession = Mage::getSingleton('customer/session');
+        }
+        return $this->_customerSession;
     }
 }
