@@ -31,8 +31,9 @@ class VinaiKopp_LoginLog_Model_Resource_Login_Collection
      */
     public function addDuration()
     {
+        // @fixme: use desource model helper instead of MySQL specific SQL
         $this->addExpressionFieldToSelect('duration', 'TIMEDIFF({{logout_at}},{{login_at}})', array(
-            'login_at'      => 'login_at',
+            'login_at'  => 'login_at',
             'logout_at' => 'logout_at',
         ));
         return $this;

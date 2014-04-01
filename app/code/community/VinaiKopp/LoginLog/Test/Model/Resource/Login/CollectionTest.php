@@ -29,9 +29,47 @@ class VinaiKopp_LoginLog_Test_Model_Resource_Login_CollectionTest
      */
     public function getInstance()
     {
-        $instance = new $this->class();
+        $instance = new $this->class;
 
         return $instance;
+    }
+
+    /**
+     * @param string $columnName
+     * @param Varien_Db_Select $select
+     * @param string $message
+     */
+    public function assertNotColumnPresent(
+        $columnName, Varien_Db_Select $select, $message = ''
+    )
+    {
+        $this->assertColumnPresent($columnName, $select, $message, false);
+    }
+
+    /**
+     * @param string $columnName
+     * @param Varien_Db_Select $select
+     * @param string $message
+     * @param bool $assertPresent Negate the assertion to not present
+     */
+    public function assertColumnPresent(
+        $columnName, Varien_Db_Select $select, $message = '', $assertPresent = true
+    )
+    {
+        $columns = $select->getPart('columns');
+        $found = false;
+        foreach ($columns as $column) {
+            if (isset($column[2]) && $column[2] === $columnName) {
+                $found = true;
+                break;
+            }
+        }
+        if ($found !== $assertPresent) {
+            if (! $message) {
+                $message = sprintf('Column "%s" not set on select', $columnName);
+            }
+            $this->fail($message);
+        }
     }
 
     /**
@@ -58,5 +96,27 @@ class VinaiKopp_LoginLog_Test_Model_Resource_Login_CollectionTest
         $instance = $this->getInstance();
         $this->assertEquals('vinaikopp_loginlog/login', $instance->getModelName());
         $this->assertEquals('vinaikopp_loginlog/login', $instance->getResourceModelName());
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAMethodAddDuration()
+    {
+        $this->assertTrue(method_exists($this->class, 'addDuration'));
+    }
+
+    /**
+     * @test
+     * @depends itShouldHaveAMethodAddDuration
+     */
+    public function itShouldAddADurationValue()
+    {
+        $instance = $this->getInstance();
+        $select = $instance->getSelect();
+        
+        $this->assertNotColumnPresent('duration', $select);
+        $instance->addDuration();
+        $this->assertColumnPresent('duration', $select);
     }
 } 
