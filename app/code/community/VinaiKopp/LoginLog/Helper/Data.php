@@ -63,7 +63,7 @@ class VinaiKopp_LoginLog_Helper_Data
      */
     public function maskIpAddress($ipAddress)
     {
-        if (false === $this->_isIP($ipAddress)) {
+        if (false === $this->_isIp($ipAddress)) {
             return $ipAddress;
         }
 
