@@ -24,12 +24,12 @@ class VinaiKopp_LoginLog_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
 
     public function getStoreMock($maskIpSetting = null)
     {
-        $mockStore = $this->getMock('Mage_Core_Model_Store');
-        $mockStore->expects($this->once())
+        $stubStore = $this->getMock('Mage_Core_Model_Store');
+        $stubStore->expects($this->any())
             ->method('getConfig')
             ->with('vinaikopp_loginlog/settings/mask_ip_address')
             ->will($this->returnValue($maskIpSetting));
-        return $mockStore;
+        return $stubStore;
     }
     
     /**
@@ -69,27 +69,27 @@ class VinaiKopp_LoginLog_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
     }
 
     /**
-     * @loadFixture
      * @test
-     * @dataProvider dataProvider
      */
-    public function itShouldNotMaskIp($ip)
+    public function itShouldNotMaskIp()
     {
-        $result   = $this->getInstance()->maskIpAddress($ip);
-        $expected = $this->expected($ip)->getData('0');
-        $this->assertEquals($expected, $result);
+        $ip = '192.168.0.1';
+        $mockStore = $this->getStoreMock(0);
+        $instance = $this->getInstance($mockStore);
+        $result   = $instance->maskIpAddress($ip);
+        $this->assertEquals($ip, $result);
     }
 
     /**
-     * @loadFixture
      * @test
-     * @dataProvider dataProvider
      */
-    public function itShouldMaskIpTwoBytes($ip)
+    public function itShouldMaskIpTwoBytes()
     {
-        $result   = $this->getInstance()->maskIpAddress($ip);
-        $expected = $this->expected($ip)->getData('0');
-        $this->assertEquals($expected, $result);
+        $ip = '192.168.0.1';
+        $mockStore = $this->getStoreMock(2);
+        $instance = $this->getInstance($mockStore);
+        $result   = $instance->maskIpAddress($ip);
+        $this->assertEquals('192.168.xxx.xxx', $result);
     }
 
     /**
