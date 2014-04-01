@@ -22,6 +22,32 @@ class VinaiKopp_LoginLog_Helper_Data
     extends Mage_Core_Helper_Abstract
 {
     /**
+     * @var Mage_Core_Model_Store
+     */
+    protected $_store;
+
+    /**
+     * @param Mage_Core_Model_Store $store
+     */
+    public function __construct(Mage_Core_Model_Store $store = null)
+    {
+        $this->_store = $store;
+    }
+
+    /**
+     * @return Mage_Core_Model_Store
+     */
+    public function getStore()
+    {
+        if (! $this->_store) {
+            // @codeCoverageIgnoreStart
+            $this->_store = Mage::app()->getStore();
+        }
+        // @codeCoverageIgnoreEnd
+        return $this->_store;
+    }
+    
+    /**
      * @param string $ipAddress
      *
      * @return mixed
@@ -32,7 +58,7 @@ class VinaiKopp_LoginLog_Helper_Data
             return $ipAddress;
         }
 
-        $maskConfig = (int)Mage::getStoreConfig('vinaikopp_loginlog/settings/mask_ip_address');
+        $maskConfig = (int)$this->getStore()->getConfig('vinaikopp_loginlog/settings/mask_ip_address');
         if (0 === $maskConfig) {
             return $ipAddress;
         }

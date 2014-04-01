@@ -23,11 +23,21 @@ class VinaiKopp_LoginLog_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
     protected $class = 'VinaiKopp_LoginLog_Helper_Data';
 
     /**
+     * @param PHPUnit_Framework_MockObject_MockObject $mockStore
+     * @param int $maskIpSetting
      * @return VinaiKopp_LoginLog_Helper_Data
      */
-    public function getInstance()
+    public function getInstance($mockStore = null, $maskIpSetting = null)
     {
-        return new $this->class;
+        if (! $mockStore) {
+            $maskIpSetting = $maskIpSetting ? : 0;
+            $mockStore = $this->getMock('Mage_Core_Model_Store');
+            $mockStore->expects($this->any())
+                ->method('getConfig')
+                ->with('vinaikopp_loginlog/settings/mask_ip_address')
+                ->will($this->returnValue($maskIpSetting));
+        }
+        return new $this->class($mockStore);
     }
 
     /**
@@ -76,5 +86,24 @@ class VinaiKopp_LoginLog_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
         $result   = $this->getInstance()->maskIpAddress($ip);
         $expected = $this->expected($ip)->getData('0');
         $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAGetStoreMethod()
+    {
+        $this->assertTrue(method_exists($this->class, 'getStore'));
+    }
+
+    /**
+     * @test
+     * @depends itShouldHaveAGetStoreMethod
+     */
+    public function itShouldReturnTheInjectedStoreModel()
+    {
+        $mockStore = $this->getMock('Mage_Core_Model_Store');
+        $instance = $this->getInstance($mockStore);
+        $this->assertSame($mockStore, $instance->getStore());
     }
 }
