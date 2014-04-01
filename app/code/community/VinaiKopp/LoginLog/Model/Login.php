@@ -115,6 +115,16 @@ class VinaiKopp_LoginLog_Model_Login
     }
 
     /**
+     * @param string $ip
+     * @return string
+     */
+    protected function _maskIpAddress($ip)
+    {
+        $helper = $this->getHelper();
+        return $helper->maskIpAddress($ip);
+    }
+
+    /**
      * @return Mage_Core_Model_Abstract
      */
     protected function _beforeSave()
@@ -123,7 +133,8 @@ class VinaiKopp_LoginLog_Model_Login
             $this->setLoginAt($this->_getCurrentDateTime());
         }
         
-        $this->setData('ip', $this->getHelper()->maskIpAddress($this->getData('ip')));
+        $ip = $this->getData('ip');
+        $this->setData('ip', $this->_maskIpAddress($ip));
 
         return parent::_beforeSave();
     }
@@ -133,7 +144,7 @@ class VinaiKopp_LoginLog_Model_Login
      */
     public function afterCommitCallback()
     {
-        $this->getSession()->setVinaiKoppLoginLogId($this->getId());
+        $this->getSession()->setData('vinaikopp_loginlog_id', $this->getId());
         return parent::afterCommitCallback();
     }
 }

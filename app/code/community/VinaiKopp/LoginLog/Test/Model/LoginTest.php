@@ -38,8 +38,11 @@ class VinaiKopp_LoginLog_Test_Model_LoginTest
             'resource_model', 'vinaikopp_loginlog/login', $mockResource
         );
         
-        $helper = $this->getMock('VinaiKopp_LoginLog_Helper_Data');
-        $instance = new $this->class($now, $helper);
+        $mockHelper = $this->getMock('VinaiKopp_LoginLog_Helper_Data');
+        $mockSession = $this->getMockBuilder('Mage_Customer_Model_Session')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $instance = new $this->class($now, $mockHelper, $mockSession);
         
         return $instance;
     }
@@ -116,5 +119,21 @@ class VinaiKopp_LoginLog_Test_Model_LoginTest
     {
         $instance = $this->getInstance();
         $this->assertInstanceOf('PHPUnit_Framework_MockObject_MockObject', $instance->getSession());
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldSetTheLoginLogIdInTheCustomerSession()
+    {
+        $instance = $this->getInstance();
+        /** @var PHPUnit_Framework_MockObject_MockObject $session */
+        $session = $instance->getSession();
+        $session->expects($this->once())
+            ->method('setData')
+            ->with('vinaikopp_loginlog_id', 1)
+            ->will($this->returnSelf());
+        $instance->setId(1);
+        $instance->afterCommitCallback();
     }
 } 
