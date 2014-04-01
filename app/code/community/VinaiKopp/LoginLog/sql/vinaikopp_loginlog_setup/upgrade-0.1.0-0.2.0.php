@@ -25,6 +25,10 @@ $installer->startSetup();
 
 $tableName = $installer->getTable('vinaikopp_loginlog/login_log');
 
-$installer->getConnection()->addColumn($tableName, 'logged_out_at', "datetime NULL DEFAULT NULL COMMENT 'Logged out at'");
+$installer->getConnection()->addColumn($tableName, 'logout_at', array(
+    'type' => Varien_Db_Ddl_Table::TYPE_DATETIME,
+    'nullable' => true,
+    'comment' => 'Logout Date and Time'
+));
 
 $installer->endSetup();
