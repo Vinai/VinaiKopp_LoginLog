@@ -113,7 +113,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
                     'getter'   => 'getId',
                     'actions'  => array(
                         array(
-                            'caption' => Mage::helper('catalog')->__('Lookup'),
+                            'caption' => $this->__('Lookup'),
                             'url'     => array(
                                 'base'   => '*/*/lookup',
                                 'params' => array()
