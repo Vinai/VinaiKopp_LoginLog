@@ -94,6 +94,17 @@ class VinaiKopp_LoginLog_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
     /**
      * @test
      */
+    public function itShouldReturnTheInputForInvalidIpAddresses()
+    {
+        $mockStore = $this->getStoreMock(1);
+        $instance = $this->getInstance($mockStore);
+        $result   = $instance->maskIpAddress('1234');
+        $this->assertEquals('1234', $result);
+    }
+
+    /**
+     * @test
+     */
     public function itShouldHaveAGetStoreMethod()
     {
         $this->assertTrue(method_exists($this->class, 'getStore'));
