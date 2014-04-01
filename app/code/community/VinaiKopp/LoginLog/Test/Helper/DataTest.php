@@ -100,4 +100,26 @@ class VinaiKopp_LoginLog_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
         $instance = $this->getInstance($mockStore);
         $this->assertSame($mockStore, $instance->getStore());
     }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAMethodGetMaskIpSetting()
+    {
+        $this->assertTrue(method_exists($this->class, 'getMaskIpSetting'));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldReturnTheMaskIpConfigSetting()
+    {
+        $mockStore = $this->getMock('Mage_Core_Model_Store');
+        $mockStore->expects($this->once())
+            ->method('getConfig')
+            ->with('vinaikopp_loginlog/settings/mask_ip_address')
+            ->will($this->returnValue(1));
+        $instance = $this->getInstance($mockStore);
+        $this->assertSame(1, $instance->getMaskIpSetting());
+    }
 }

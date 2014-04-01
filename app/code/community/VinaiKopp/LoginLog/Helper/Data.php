@@ -46,6 +46,15 @@ class VinaiKopp_LoginLog_Helper_Data
         // @codeCoverageIgnoreEnd
         return $this->_store;
     }
+
+    /**
+     * @return int
+     */
+    public function getMaskIpSetting()
+    {
+        $config = $this->getStore()->getConfig('vinaikopp_loginlog/settings/mask_ip_address');
+        return (int) $config;
+    }
     
     /**
      * @param string $ipAddress
@@ -58,7 +67,7 @@ class VinaiKopp_LoginLog_Helper_Data
             return $ipAddress;
         }
 
-        $maskConfig = (int)$this->getStore()->getConfig('vinaikopp_loginlog/settings/mask_ip_address');
+        $maskConfig = $this->getMaskIpSetting();
         if (0 === $maskConfig) {
             return $ipAddress;
         }
