@@ -98,7 +98,7 @@ class VinaiKopp_LoginLog_Model_Login
             $this->setLoginAt($this->_getCurrentDateTime());
         }
 
-        $this->setData('ip', Mage::helper('vinaikopp_loginlog')->maskIPAddress($this->getData('ip')));
+        $this->setData('ip', $this->getHelper()->maskIpAddress($this->getData('ip')));
 
         return parent::_beforeSave();
     }
