@@ -132,6 +132,9 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
         return parent::_prepareColumns();
     }
 
+    /**
+     * @return VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
+     */
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('id');
@@ -146,8 +149,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
     }
 
     /**
-     * @param Mage_Catalog_Model_Product|Varien_Object
-     *
+     * @param VinaiKopp_LoginLog_Model_Login $item
      * @return string
      */
     public function getRowUrl($item)
