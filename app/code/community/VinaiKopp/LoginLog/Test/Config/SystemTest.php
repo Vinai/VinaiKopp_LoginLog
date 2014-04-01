@@ -68,6 +68,6 @@ class VinaiKopp_LoginLog_Test_Config_SystemTest
      */
     public function itShouldHaveAMaskIpField()
     {
-        $this->assertFieldDefined('vinaikopp_loginlog/settings/mask_ip_address');
+        $this->assertFieldDefined('vinaikopp_loginlog/privacy/mask_ip_address');
     }
 }

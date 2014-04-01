@@ -33,7 +33,7 @@
                         </ipinfodb_api_key>
                     </fields>
                 </lookup_api>
-                <settings>
+                <privacy>
                     <label>Settings</label>
                     <sort_order>20</sort_order>
                     <expanded>0</expanded>
@@ -52,7 +52,7 @@
                             <comment>To ensure that you do not store the visitor IP, which is Personally Identifiable Information (PII)</comment>
                         </mask_ip_address>
                     </fields>
-                </settings>
+                </privacy>
             </groups>
         </vinaikopp_loginlog>
     </sections>
