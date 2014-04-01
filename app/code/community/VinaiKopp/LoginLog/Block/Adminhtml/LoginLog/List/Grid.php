@@ -70,7 +70,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
         ));
 
         $this->addColumn('login_at', array(
-            'header' => $this->__('Date'),
+            'header' => $this->__('Login'),
             'index'  => 'login_at',
             'type'   => 'datetime'
         ));
