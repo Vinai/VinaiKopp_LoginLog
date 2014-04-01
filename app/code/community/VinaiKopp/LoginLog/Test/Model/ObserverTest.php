@@ -151,21 +151,8 @@ class VinaiKopp_LoginLog_Test_Model_ObserverTest
             ->will($this->returnValue(815));
 
         $mockCustomer = $this->getModelMock('customer/customer', array('getId', 'getEmail'));
-        $mockCustomer->expects($this->once())
-            ->method('getId')
-            ->with()
-            ->will($this->returnValue(1));
-
-        $mockCustomer->expects($this->once())
-            ->method('getEmail')
-            ->with()
-            ->will($this->returnValue('test@example.com'));
 
         $mockEvent = $this->getMock('Varien_Event_Observer', array('getCustomer'));
-        $mockEvent->expects($this->once())
-            ->method('getCustomer')
-            ->with()
-            ->will($this->returnValue($mockCustomer));
 
         $model->customerLogout($mockEvent);
     }
