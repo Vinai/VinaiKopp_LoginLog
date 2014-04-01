@@ -37,7 +37,9 @@ class VinaiKopp_LoginLog_Test_Model_LoginTest
         $this->app()->getConfig()->replaceInstanceCreation(
             'resource_model', 'vinaikopp_loginlog/login', $mockResource
         );
-        $instance = new $this->class($now);
+        
+        $helper = $this->getMock('VinaiKopp_LoginLog_Helper_Data');
+        $instance = new $this->class($now, $helper);
         
         return $instance;
     }
@@ -78,5 +80,22 @@ class VinaiKopp_LoginLog_Test_Model_LoginTest
         $instance->setSomethingChanged(true);
         $instance->save();
         $this->assertEquals($now, $instance->getLoginAt());
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAMethodGetHelper()
+    {
+        $this->assertTrue(method_exists($this->class, 'getHelper'));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldReturnTheInjectedHelper()
+    {
+        $instance = $this->getInstance();
+        $this->assertInstanceOf('PHPUnit_Framework_MockObject_MockObject', $instance->getHelper());
     }
 } 

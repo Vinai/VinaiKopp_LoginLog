@@ -43,13 +43,20 @@ class VinaiKopp_LoginLog_Model_Login
     protected $_dateTime;
 
     /**
-     * @param string $date
+     * @var VinaiKopp_LoginLog_Helper_Data
      */
-    public function __construct($date = null)
+    protected $_helper;
+
+    /**
+     * @param string $date
+     * @param VinaiKopp_LoginLog_Helper_Data $helper
+     */
+    public function __construct($date = null, $helper = null)
     {
         if ($date) {
             $this->_dateTime = $date;
         }
+        $this->_helper = $helper;
         parent::__construct();
     }
 
@@ -64,6 +71,17 @@ class VinaiKopp_LoginLog_Model_Login
         }
         // @codeCoverageIgnoreEnd
         return $this->_dateTime;
+    }
+
+    /**
+     * @return VinaiKopp_LoginLog_Helper_Data
+     */
+    public function getHelper()
+    {
+        if (! $this->_helper) {
+            $this->_helper = Mage::helper('vinaikopp_loginlog');
+        }
+        return $this->_helper;
     }
 
     protected function _construct()
