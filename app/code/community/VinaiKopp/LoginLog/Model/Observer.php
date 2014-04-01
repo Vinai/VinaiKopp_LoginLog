@@ -33,16 +33,16 @@ class VinaiKopp_LoginLog_Model_Observer
     /**
      * @var Mage_Customer_Model_Session
      */
-    protected $_customerSession = NULL;
+    protected $_customerSession = null;
 
     /**
      * @param VinaiKopp_LoginLog_Model_Login $login
      * @param Mage_Core_Helper_Http          $httpHelper
      * @param Mage_Customer_Model_Session    $customerSession
      */
-    public function __construct($login = NULL, $httpHelper = NULL, $customerSession = NULL)
+    public function __construct($login = null, $httpHelper = null, $customerSession = null)
     {
-        if (NULL !== $login) {
+        if (null !== $login) {
             $this->_login = $login;
         }
         $this->_coreHttpHelper  = $httpHelper;
@@ -100,13 +100,13 @@ class VinaiKopp_LoginLog_Model_Observer
     {
         $logId = (int)$this->getSession()->getVinaiKoppLoginLogId();
         if (0 === $logId) {
-            return NULL;
+            return null;
         }
         $this->getLoginLog()
             ->load($logId)
             ->setLoggedOutAt(Varien_Date::now())
             ->save();
-        return NULL;
+        return null;
     }
 
     /**
@@ -114,7 +114,7 @@ class VinaiKopp_LoginLog_Model_Observer
      */
     public function getSession()
     {
-        if (NULL === $this->_customerSession) {
+        if (null === $this->_customerSession) {
             $this->_customerSession = Mage::getSingleton('customer/session');
         }
         return $this->_customerSession;

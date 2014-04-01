@@ -26,7 +26,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
         $this->setId('vinaikopp_loginlog');
         $this->setDefaultSort('id');
         $this->setDefaultDir('desc');
-        $this->setUseAjax(TRUE);
+        $this->setUseAjax(true);
         parent::_construct();
     }
 
@@ -37,7 +37,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
      */
     public function getGridUrl()
     {
-        return $this->getUrl('*/*/grid', array('_current' => TRUE));
+        return $this->getUrl('*/*/grid', array('_current' => true));
     }
 
     /**
@@ -63,7 +63,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
     {
         $this->addColumn('id', array(
             'header'   => $this->__('ID'),
-            'sortable' => TRUE,
+            'sortable' => true,
             'width'    => '40px',
             'index'    => 'id',
             'type'     => 'number'
@@ -101,7 +101,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
             'index'        => 'user_agent',
             'renderer'     => 'adminhtml/widget_grid_column_renderer_longtext',
             'string_limit' => 150,
-            'escape'       => TRUE,
+            'escape'       => true,
         ));
 
         if (!$this->_isExport) {
@@ -121,8 +121,8 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
                             'field'   => 'id'
                         )
                     ),
-                    'filter'   => FALSE,
-                    'sortable' => FALSE
+                    'filter'   => false,
+                    'sortable' => false
                 ));
         }
 

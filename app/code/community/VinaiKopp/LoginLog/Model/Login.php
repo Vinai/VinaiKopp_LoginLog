@@ -45,7 +45,7 @@ class VinaiKopp_LoginLog_Model_Login
     /**
      * @param string $date
      */
-    public function __construct($date = NULL)
+    public function __construct($date = null)
     {
         if ($date) {
             $this->_dateTime = $date;
