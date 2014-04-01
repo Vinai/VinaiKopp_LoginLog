@@ -75,9 +75,9 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
             'type'   => 'datetime'
         ));
 
-        $this->addColumn('logged_out_at', array(
+        $this->addColumn('logout_at', array(
             'header' => $this->__('Logout'),
-            'index'  => 'logged_out_at',
+            'index'  => 'logout_at',
             'type'   => 'datetime'
         ));
 

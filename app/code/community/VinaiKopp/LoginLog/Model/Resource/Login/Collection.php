@@ -31,9 +31,9 @@ class VinaiKopp_LoginLog_Model_Resource_Login_Collection
      */
     public function addDuration()
     {
-        $this->addExpressionFieldToSelect('duration', 'TIMEDIFF({{logged_out_at}},{{login_at}})', array(
+        $this->addExpressionFieldToSelect('duration', 'TIMEDIFF({{logout_at}},{{login_at}})', array(
             'login_at'      => 'login_at',
-            'logged_out_at' => 'logged_out_at',
+            'logout_at' => 'logout_at',
         ));
         return $this;
     }
