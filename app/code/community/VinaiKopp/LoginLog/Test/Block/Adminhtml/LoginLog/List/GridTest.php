@@ -1,4 +1,5 @@
 <?php
+
 /**
  * NOTICE OF LICENSE
  *
@@ -17,8 +18,6 @@
  * @copyright  Copyright (c) 2014 Vinai Kopp http://netzarbeiter.com
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-
 class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_List_GridTest
     extends EcomDev_PHPUnit_Test_Case
 {
@@ -31,6 +30,8 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_List_GridTest
 
         $stubUrl = $this->getModelMock('adminhtml/url');
         $this->replaceByMock('model', 'adminhtml/url', $stubUrl);
+        
+        $this->stubLoginCollection();
     }
 
     /**
@@ -49,7 +50,7 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_List_GridTest
         $stubColumn->expects($this->any())
             ->method('setGrid')
             ->will($this->returnSelf());
-        
+
         $stubLayout = $this->getModelMock('core/layout');
         $stubLayout->expects($this->any())
             ->method('createBlock')
@@ -60,7 +61,36 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_List_GridTest
             )));
         return $stubLayout;
     }
-    
+
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function stubLoginCollection()
+    {
+        $mockData = array(
+            array(
+                'id' => 234,
+                'customer_id' => 1,
+                'email' => 'test@example.com',
+                'user_agent' => 'dummy-user-agent',
+                'login_at' => '2014-07-12 01:11:11',
+                'logout_at' => '2014-07-12 01:12:11',
+            )
+        );
+
+        $mockLogins = $this->getMock(
+            'VinaiKopp_LoginLog_Model_Resource_Login_Collection',
+            array('load', 'getData')
+        );
+        $mockLogins->expects($this->any())
+            ->method('getData')
+            ->will($this->returnValue($mockData));
+        
+        $this->replaceByMock('resource_model', 'vinaikopp_loginlog/login_collection', $mockLogins);
+        
+        return $mockLogins;
+    }
+
     /**
      * @return VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
      */
@@ -70,10 +100,10 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_List_GridTest
             'Mage_Adminhtml_Block_Widget_Grid_Massaction',
             array('setFormFieldName', 'addItem')
         );
-        
+
         $instance = new $this->class;
         $instance->setChild('massaction', $stubMassAction);
-        
+
         return $instance;
     }
 
@@ -100,7 +130,7 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_List_GridTest
         $this->replaceByMock('model', 'adminhtml/url', $mockUrl);
 
         $block = $this->getInstance();
-        
+
         $this->assertEquals('http://expectation', $block->getGridUrl());
     }
 
@@ -112,16 +142,16 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_List_GridTest
         $this->prepareEnvironmentForGrid();
 
         $stubLayout = $this->getLayoutStub();
-        
+
         $mockCollection = $this->getResourceModelMockBuilder('vinaikopp_loginlog/login_collection')
             ->disableOriginalConstructor()
             ->getMock();
         $this->replaceByMock('resource_model', 'vinaikopp_loginlog/login_collection', $mockCollection);
-        
+
         $block = $this->getInstance();
         $block->setLayout($stubLayout);
         $block->toHtml();
-        
+
         $this->assertSame($mockCollection, $block->getCollection());
     }
 
@@ -131,12 +161,12 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_List_GridTest
     public function itShouldHaveColumns()
     {
         $this->prepareEnvironmentForGrid();
-        
+
         $stubLayout = $this->getLayoutStub();
         $block = $this->getInstance();
         $block->setLayout($stubLayout);
         $block->toHtml();
-        
+
         $this->assertGreaterThan(1, $block->getColumnCount());
     }
 
@@ -164,7 +194,7 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_List_GridTest
 
         $stubLayout = $this->getLayoutStub();
         $block = $this->getInstance();
-        
+
         $mockMassAction = $block->getChild('massaction');
         $mockMassAction->expects($this->once())
             ->method('setFormFieldName')
