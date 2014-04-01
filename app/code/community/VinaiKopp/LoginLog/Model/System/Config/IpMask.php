@@ -18,9 +18,36 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class VinaiKopp_LoginLog_Model_Config_IpMask
+class VinaiKopp_LoginLog_Model_System_Config_IpMask
 {
+    /**
+     * @var VinaiKopp_LoginLog_Helper_Data
+     */
+    protected $_helper;
 
+    /**
+     * @param VinaiKopp_LoginLog_Helper_Data $helper
+     */
+    public function __construct($helper = null)
+    {
+        if ($helper) {
+            $this->_helper = $helper;
+        }
+    }
+
+    /**
+     * @return VinaiKopp_LoginLog_Helper_Data
+     */
+    public function getHelper()
+    {
+        if (! $this->_helper) {
+            // @codeCoverageIgnoreStart
+            $this->_helper = Mage::helper('vinaikopp_loginlog');
+        }
+        // @codeCoverageIgnoreEnd
+        return $this->_helper;
+    }
+    
     /**
      * Options getter
      *
@@ -28,11 +55,12 @@ class VinaiKopp_LoginLog_Model_Config_IpMask
      */
     public function toOptionArray()
     {
+        $helper = $this->getHelper();
         return array(
-            array('value' => 0, 'label' => Mage::helper('vinaikopp_loginlog')->__('Disable')),
-            array('value' => 1, 'label' => Mage::helper('vinaikopp_loginlog')->__('1 Byte 192.168.100.xxx')),
-            array('value' => 2, 'label' => Mage::helper('vinaikopp_loginlog')->__('2 Bytes 192.168.xxx.xxx')),
-            array('value' => 3, 'label' => Mage::helper('vinaikopp_loginlog')->__('3 Bytes 192.xxx.xxx.xxx')),
+            array('value' => 0, 'label' => $helper->__('Disable')),
+            array('value' => 1, 'label' => $helper->__('1 Byte 192.168.100.xxx')),
+            array('value' => 2, 'label' => $helper->__('2 Bytes 192.168.xxx.xxx')),
+            array('value' => 3, 'label' => $helper->__('3 Bytes 192.xxx.xxx.xxx')),
 
         );
     }
@@ -42,13 +70,13 @@ class VinaiKopp_LoginLog_Model_Config_IpMask
      *
      * @return array
      */
-    public function toArray()
+    public function toOptionHash()
     {
-        return array(
-            0 => Mage::helper('vinaikopp_loginlog')->__('Disable'),
-            1 => Mage::helper('vinaikopp_loginlog')->__('1 Byte 192.168.100.xxx'),
-            2 => Mage::helper('vinaikopp_loginlog')->__('2 Bytes 192.168.xxx.xxx'),
-            3 => Mage::helper('vinaikopp_loginlog')->__('3 Bytes 192.xxx.xxx.xxx'),
-        );
+        $options = array();
+        foreach ($this->toOptionArray() as $option) {
+            $key = $option['value'];
+            $options[$key] = $option['label'];
+        }
+        return $options;
     }
 }
