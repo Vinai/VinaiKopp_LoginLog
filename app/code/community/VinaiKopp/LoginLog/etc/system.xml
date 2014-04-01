@@ -34,7 +34,7 @@
                     </fields>
                 </lookup_api>
                 <privacy>
-                    <label>Settings</label>
+                    <label>Privacy</label>
                     <sort_order>20</sort_order>
                     <expanded>0</expanded>
                     <show_in_default>1</show_in_default>
@@ -45,11 +45,11 @@
                             <label>Mask IP Address</label>
                             <sort_order>10</sort_order>
                             <frontend_type>select</frontend_type>
-                            <source_model>vinaikopp_loginlog/config_ipMask</source_model>
+                            <source_model>vinaikopp_loginlog/system_config_ipMask</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
-                            <comment>To ensure that you do not store the visitor IP, which is Personally Identifiable Information (PII)</comment>
+                            <comment>Set to not store the full visitor IP, which is Personally Identifiable Information (PII)</comment>
                         </mask_ip_address>
                     </fields>
                 </privacy>
