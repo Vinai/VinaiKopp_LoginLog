@@ -27,10 +27,10 @@
  * @method VinaiKopp_LoginLog_Model_Login setUserAgent(string $value)
  * @method string getLoginAt()
  * @method VinaiKopp_LoginLog_Model_Login setLoginAt(string $value)
- * @method string getLoggedOutAt()
- * @method VinaiKopp_LoginLog_Model_Login setLoggedOutAt(string $value)
  * @method int getCustomerId()
  * @method VinaiKopp_LoginLog_Model_Login setCustomerId(int $value)
+ * @method string getLogoutAt()
+ * @method VinaiKopp_LoginLog_Model_Login setLogoutAt(string $value)
  * @method string getIp()
  * @method VinaiKopp_LoginLog_Model_Login setIp(string $value)
  */
