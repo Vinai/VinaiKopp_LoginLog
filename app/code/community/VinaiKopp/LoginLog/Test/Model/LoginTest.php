@@ -92,10 +92,29 @@ class VinaiKopp_LoginLog_Test_Model_LoginTest
 
     /**
      * @test
+     * @depends itShouldHaveAMethodGetHelper
      */
     public function itShouldReturnTheInjectedHelper()
     {
         $instance = $this->getInstance();
         $this->assertInstanceOf('PHPUnit_Framework_MockObject_MockObject', $instance->getHelper());
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAMethodGetSession()
+    {
+        $this->assertTrue(method_exists($this->class, 'getSession'));
+    }
+
+    /**
+     * @test
+     * @depends itShouldHaveAMethodGetSession
+     */
+    public function itShouldReturnTheInjectedSession()
+    {
+        $instance = $this->getInstance();
+        $this->assertInstanceOf('PHPUnit_Framework_MockObject_MockObject', $instance->getSession());
     }
 } 

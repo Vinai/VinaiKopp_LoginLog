@@ -48,15 +48,25 @@ class VinaiKopp_LoginLog_Model_Login
     protected $_helper;
 
     /**
+     * @var Mage_Customer_Model_Session
+     */
+    protected $_session;
+
+    /**
      * @param string $date
      * @param VinaiKopp_LoginLog_Helper_Data $helper
+     * @param Mage_Customer_Model_Session $session
      */
-    public function __construct($date = null, $helper = null)
+    public function __construct(
+        $date = null,
+        VinaiKopp_LoginLog_Helper_Data $helper = null,
+        Mage_Customer_Model_Session $session = null)
     {
         if ($date) {
             $this->_dateTime = $date;
         }
         $this->_helper = $helper;
+        $this->_session = $session;
         parent::__construct();
     }
 
@@ -79,9 +89,24 @@ class VinaiKopp_LoginLog_Model_Login
     public function getHelper()
     {
         if (! $this->_helper) {
+            // @codeCoverageIgnoreStart
             $this->_helper = Mage::helper('vinaikopp_loginlog');
         }
+        // @codeCoverageIgnoreEnd
         return $this->_helper;
+    }
+
+    /**
+     * @return Mage_Customer_Model_Session
+     */
+    public function getSession()
+    {
+        if (! $this->_session) {
+            // @codeCoverageIgnoreStart
+            $this->_session = Mage::getSingleton('customer/session');
+        }
+        // @codeCoverageIgnoreEnd
+        return $this->_session;
     }
 
     protected function _construct()
@@ -97,7 +122,7 @@ class VinaiKopp_LoginLog_Model_Login
         if ($this->isObjectNew()) {
             $this->setLoginAt($this->_getCurrentDateTime());
         }
-
+        
         $this->setData('ip', $this->getHelper()->maskIpAddress($this->getData('ip')));
 
         return parent::_beforeSave();
@@ -108,7 +133,7 @@ class VinaiKopp_LoginLog_Model_Login
      */
     public function afterCommitCallback()
     {
-        Mage::getSingleton('customer/session')->setVinaiKoppLoginLogId($this->getId());
+        $this->getSession()->setVinaiKoppLoginLogId($this->getId());
         return parent::afterCommitCallback();
     }
 }
