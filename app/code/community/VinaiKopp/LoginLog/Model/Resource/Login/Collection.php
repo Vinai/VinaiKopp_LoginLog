@@ -1,4 +1,5 @@
 <?php
+
 /**
  * NOTICE OF LICENSE
  *
@@ -17,8 +18,6 @@
  * @copyright  Copyright (c) 2014 Vinai Kopp http://netzarbeiter.com
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-
 class VinaiKopp_LoginLog_Model_Resource_Login_Collection
     extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
@@ -33,10 +32,12 @@ class VinaiKopp_LoginLog_Model_Resource_Login_Collection
     public function addDuration()
     {
         // @fixme: use resource helper instead of MySQL specific SQL
-        $this->addExpressionFieldToSelect('duration', 'TIMEDIFF({{logout_at}},{{login_at}})', array(
-            'login_at'  => 'login_at',
-            'logout_at' => 'logout_at',
-        ));
+        $this->addExpressionFieldToSelect(
+            'duration',
+            'TIMEDIFF({{logout_at}},{{login_at}})', array(
+                'login_at' => 'login_at',
+                'logout_at' => 'logout_at',
+            ));
         return $this;
     }
 }
