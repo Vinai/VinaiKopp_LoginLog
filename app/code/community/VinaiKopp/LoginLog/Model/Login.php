@@ -18,7 +18,6 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-
 /**
  * @method int getId()
  * @method VinaiKopp_LoginLog_Model_Login setId(int $value)
@@ -40,11 +39,11 @@ class VinaiKopp_LoginLog_Model_Login
      * @var string
      */
     protected $_dateTime;
-    
+
     /**
      * @param string $date
      */
-    public function __construct($date = null)
+    public function __construct($date = NULL)
     {
         if ($date) {
             $this->_dateTime = $date;
@@ -57,7 +56,7 @@ class VinaiKopp_LoginLog_Model_Login
      */
     protected function _getCurrentDateTime()
     {
-        if (! $this->_dateTime) {
+        if (!$this->_dateTime) {
             // @codeCoverageIgnoreStart
             return Varien_Date::now();
         }
@@ -78,8 +77,9 @@ class VinaiKopp_LoginLog_Model_Login
         if ($this->isObjectNew()) {
             $this->setLoginAt($this->_getCurrentDateTime());
         }
+
+        $this->setData('ip', Mage::helper('vinaikopp_loginlog')->maskIPAddress($this->getData('ip')));
+
         return parent::_beforeSave();
     }
-
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * NOTICE OF LICENSE
  *
@@ -17,13 +18,13 @@
  * @copyright  Copyright (c) 2014 Vinai Kopp http://netzarbeiter.com
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-
-class VinaiKopp_LoginLog_Test_Helper_DataTest
-    extends EcomDev_PHPUnit_Test_Case
+class VinaiKopp_LoginLog_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
 {
     protected $class = 'VinaiKopp_LoginLog_Helper_Data';
-    
+
+    /**
+     * @return VinaiKopp_LoginLog_Helper_Data
+     */
     public function getInstance()
     {
         return new $this->class;
@@ -44,4 +45,36 @@ class VinaiKopp_LoginLog_Test_Helper_DataTest
     {
         $this->assertInstanceOf('Mage_Core_Helper_Abstract', $this->getInstance());
     }
-} 
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAMethodMaskIPAddress()
+    {
+        $this->assertTrue(is_callable(array($this->class, 'maskIPAddress')));
+    }
+
+    /**
+     * @loadFixture
+     * @test
+     * @dataProvider dataProvider
+     */
+    public function itShouldNotMaskIp($ip)
+    {
+        $result   = $this->getInstance()->maskIPAddress($ip);
+        $expected = $this->expected($ip)->getData('0');
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @loadFixture
+     * @test
+     * @dataProvider dataProvider
+     */
+    public function itShouldMaskIpTwoBytes($ip)
+    {
+        $result   = $this->getInstance()->maskIPAddress($ip);
+        $expected = $this->expected($ip)->getData('0');
+        $this->assertEquals($expected, $result);
+    }
+}

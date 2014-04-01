@@ -40,7 +40,7 @@ class VinaiKopp_LoginLog_Model_Observer
         if ($login) {
             $this->_login = $login;
         }
-        
+
         $this->_coreHttpHelper = $httpHelper;
     }
 
@@ -83,6 +83,6 @@ class VinaiKopp_LoginLog_Model_Observer
             ->setIp($helper->getRemoteAddr())
             ->setEmail($customer->getEmail())
             ->setUserAgent($helper->getHttpUserAgent())
-            ->save();    
+            ->save();
     }
-} 
+}

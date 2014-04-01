@@ -1,4 +1,5 @@
 <?php
+
 /**
  * NOTICE OF LICENSE
  *
@@ -17,7 +18,6 @@
  * @copyright  Copyright (c) 2014 Vinai Kopp http://netzarbeiter.com
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class VinaiKopp_LoginLog_Test_Config_SystemTest
     extends PHPUnit_Framework_TestCase
 {
@@ -30,20 +30,20 @@ class VinaiKopp_LoginLog_Test_Config_SystemTest
     protected function getXml()
     {
         $file = $this->getFile();
-        $xml = simplexml_load_file($file);
+        $xml  = simplexml_load_file($file);
         return $xml;
     }
-    
+
     public function assertFieldDefined($path, $message = '')
     {
         @list($section, $group, $field) = explode('/', $path);
         $nodePath = "sections/$section/groups/$group/fields/$field";
-        $result = $this->getXml()->xpath($nodePath);
-        if (! $message) {
+        $result   = $this->getXml()->xpath($nodePath);
+        if (!$message) {
             $defaultMessage = sprintf("System configuration field \"$path\" not defined");
         }
-        if (! $result) {
-            $this->fail($message ?: $defaultMessage);
+        if (!$result) {
+            $this->fail($message ? : $defaultMessage);
         }
     }
 
@@ -62,4 +62,12 @@ class VinaiKopp_LoginLog_Test_Config_SystemTest
     {
         $this->assertFieldDefined('vinaikopp_loginlog/lookup_api/ipinfodb_api_key');
     }
-} 
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAMaskIpField()
+    {
+        $this->assertFieldDefined('vinaikopp_loginlog/settings/mask_ip_address');
+    }
+}

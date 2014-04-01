@@ -98,4 +98,11 @@
             </modules>
         </suite>
     </phpunit>
+    <default>
+        <vinaikopp_loginlog>
+            <settings>
+                <mask_ip_address>1</mask_ip_address>
+            </settings>
+        </vinaikopp_loginlog>
+    </default>
 </config>
