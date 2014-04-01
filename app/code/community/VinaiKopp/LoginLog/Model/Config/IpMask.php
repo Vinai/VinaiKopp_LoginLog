@@ -18,10 +18,6 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-/**
- * Used in creating options for Yes|No config value selection
- *
- */
 class VinaiKopp_LoginLog_Model_Config_IpMask
 {
 
