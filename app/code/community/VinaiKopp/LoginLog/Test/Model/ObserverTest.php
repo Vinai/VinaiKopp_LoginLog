@@ -1,5 +1,4 @@
 <?php
-
 /**
  * NOTICE OF LICENSE
  *
@@ -18,6 +17,8 @@
  * @copyright  Copyright (c) 2014 Vinai Kopp http://netzarbeiter.com
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
+
 class VinaiKopp_LoginLog_Test_Model_ObserverTest
     extends EcomDev_PHPUnit_Test_Case
 {

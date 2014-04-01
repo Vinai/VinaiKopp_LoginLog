@@ -18,6 +18,7 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+
 class VinaiKopp_LoginLog_Model_IpInfoDb
 {
     const XML_CONF_API_KEY = 'vinaikopp_loginlog/lookup_api/ipinfodb_api_key';
