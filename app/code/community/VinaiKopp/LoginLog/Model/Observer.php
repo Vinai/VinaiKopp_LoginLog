@@ -32,22 +32,13 @@ class VinaiKopp_LoginLog_Model_Observer
     protected $_coreHttpHelper;
 
     /**
-     * @var Mage_Customer_Model_Session
-     */
-    protected $_customerSession = null;
-
-    /**
      * @param VinaiKopp_LoginLog_Model_Login $login
-     * @param Mage_Core_Helper_Http $httpHelper
-     * @param Mage_Customer_Model_Session $customerSession
      */
-    public function __construct($login = null, $httpHelper = null, $customerSession = null)
+    public function __construct($login = null)
     {
         if (null !== $login) {
             $this->_login = $login;
         }
-        $this->_coreHttpHelper = $httpHelper;
-        $this->_customerSession = $customerSession;
     }
 
     /**
@@ -64,45 +55,16 @@ class VinaiKopp_LoginLog_Model_Observer
     }
 
     /**
-     * @return Mage_Core_Helper_Http
-     */
-    public function getCoreHttpHelper()
-    {
-        if (!$this->_coreHttpHelper) {
-            // @codeCoverageIgnoreStart
-            $this->_coreHttpHelper = Mage::helper('core/http');
-        }
-        // @codeCoverageIgnoreEnd
-        return $this->_coreHttpHelper;
-    }
-
-    /**
-     * @return Mage_Customer_Model_Session
-     */
-    public function getSession()
-    {
-        if (!$this->_customerSession) {
-            // @codeCoverageIgnoreStart
-            $this->_customerSession = Mage::getSingleton('customer/session');
-        }
-        // @codeCoverageIgnoreEnd
-        return $this->_customerSession;
-    }
-
-    /**
      * @param Varien_Event_Observer $args
      */
     public function customerLogin(Varien_Event_Observer $args)
     {
         /** @var Mage_Customer_Model_Customer $customer */
         $customer = $args->getCustomer();
-        $helper = $this->getCoreHttpHelper();
-        $this->getLoginLog()
-            ->setCustomerId($customer->getId())
-            ->setIp($helper->getRemoteAddr())
-            ->setEmail($customer->getEmail())
-            ->setUserAgent($helper->getHttpUserAgent())
-            ->save();
+        $login = $this->getLoginLog();
+        if ($login->registerLogin($customer)) {
+            $login->save();
+        }
     }
 
     /**
@@ -112,16 +74,9 @@ class VinaiKopp_LoginLog_Model_Observer
     {
         /** @var Mage_Customer_Model_Customer $customer */
         $customer = $args->getCustomer();
-        $session = $this->getSession();
-        $logId = $session->getData('vinaikopp_loginlog_id');
-
-        if ($logId) {
-            $login = $this->getLoginLog();
-            $login->load($logId);
-
-            if ($login->getCustomerId() === $customer->getId()) {
-                $login->registerLogout()->save();
-            }
+        $login = $this->getLoginLog();
+        if ($login->registerLogout($customer)) {
+            $login->save();
         }
     }
 }

@@ -28,16 +28,20 @@ class VinaiKopp_LoginLog_Test_Model_ObserverTest
      * @return VinaiKopp_LoginLog_Model_Observer
      */
     public function getInstance()
-    {
-        $mockLoginLog = $this->getModelMock('vinaikopp_loginlog/login', array(
-            'setCustomerId', 'setEmail', 'setIp', 'setUserAgent',
-            'setLoginAt', 'load', 'save', 'registerLogout', 'getCustomerId'
-        ));
+    { 
+        $setters = array('setCustomerId', 'setEmail', 'setIp', 'setUserAgent',
+            'setLoginAt');
+        $nonSetters = array('load', 'save', 'registerLogout', 'registerLogin', 'getCustomerId');
+        $allMethods = array_merge($setters, $nonSetters);
+        $mockLoginLog = $this->getModelMock('vinaikopp_loginlog/login', $allMethods);
+        
+        foreach ($setters as $method) {
+            $mockLoginLog->expects($this->any())
+                ->method($method)
+                ->will($this->returnSelf());
+        }
 
-        $mockHttpHelper = $this->getHelperMock('core/http');
-        $sessionMock    = $this->mockSession('customer/session', array('getData'));
-
-        $instance = new $this->class($mockLoginLog, $mockHttpHelper, $sessionMock);
+        $instance = new $this->class($mockLoginLog);
 
         return $instance;
     }
@@ -55,7 +59,7 @@ class VinaiKopp_LoginLog_Test_Model_ObserverTest
      */
     public function itShouldHaveAMethodCustomerLogin()
     {
-        $this->assertTrue(is_callable(array($this->class, 'customerLogin')));
+        $this->assertTrue(method_exists($this->class, 'customerLogin'));
     }
 
     /**
@@ -63,7 +67,7 @@ class VinaiKopp_LoginLog_Test_Model_ObserverTest
      */
     public function itShouldHaveAMethodcustomerLogout()
     {
-        $this->assertTrue(is_callable(array($this->class, 'customerLogout')));
+        $this->assertTrue(method_exists($this->class, 'customerLogout'));
     }
 
     /**
@@ -72,55 +76,24 @@ class VinaiKopp_LoginLog_Test_Model_ObserverTest
     public function itShouldLogCustomerLogins()
     {
         $model = $this->getInstance();
-        /** @var EcomDev_PHPUnit_Mock_Proxy $mockLoginLog */
-        $mockLoginLog = $model->getLoginLog();
-        $mockLoginLog->expects($this->once())
-            ->method('setCustomerId')
-            ->with(1)
-            ->will($this->returnSelf());
-        $mockLoginLog->expects($this->once())
-            ->method('setEmail')
-            ->with('test@example.com')
-            ->will($this->returnSelf());
-        $mockLoginLog->expects($this->once())
-            ->method('setIp')
-            ->with('127.0.0.1')
-            ->will($this->returnSelf());
-        $mockLoginLog->expects($this->once())
-            ->method('setUserAgent')
-            ->with('TestDummyAgent')
-            ->will($this->returnSelf());
-        $mockLoginLog->expects($this->once())
-            ->method('save')
-            ->with()
-            ->will($this->returnSelf());
-
-        /** @var EcomDev_PHPUnit_Mock_Proxy $mockHttpHelper */
-        $mockHttpHelper = $model->getCoreHttpHelper();
-        $mockHttpHelper->expects($this->once())
-            ->method('getRemoteAddr')
-            ->with()
-            ->will($this->returnValue('127.0.0.1'));
-        $mockHttpHelper->expects($this->once())
-            ->method('getHttpUserAgent')
-            ->with()
-            ->will($this->returnValue('TestDummyAgent'));
-
+        
         $mockCustomer = $this->getModelMock('customer/customer', array('getId', 'getEmail'));
-        $mockCustomer->expects($this->once())
-            ->method('getId')
-            ->with()
-            ->will($this->returnValue(1));
-        $mockCustomer->expects($this->once())
-            ->method('getEmail')
-            ->with()
-            ->will($this->returnValue('test@example.com'));
 
         $mockEvent = $this->getMock('Varien_Event_Observer', array('getCustomer'));
         $mockEvent->expects($this->once())
             ->method('getCustomer')
             ->with()
             ->will($this->returnValue($mockCustomer));
+        
+        $mockLoginLog = $model->getLoginLog();
+        $mockLoginLog->expects($this->once())
+            ->method('registerLogin')
+            ->with($mockCustomer)
+            ->will($this->returnValue(true));
+        $mockLoginLog->expects($this->once())
+            ->method('save')
+            ->with()
+            ->will($this->returnSelf());
 
         $model->customerLogin($mockEvent);
     }
@@ -131,41 +104,22 @@ class VinaiKopp_LoginLog_Test_Model_ObserverTest
     public function itShouldLogCustomerLogouts()
     {
         $model = $this->getInstance();
-        
-        $mockSession = $model->getSession();
-        $mockSession->expects($this->once())
-            ->method('getData')
-            ->with('vinaikopp_loginlog_id')
-            ->will($this->returnValue(123));
-        
-        /** @var EcomDev_PHPUnit_Mock_Proxy $mockLoginLog */
-        $mockLoginLog = $model->getLoginLog();
-        $mockLoginLog->expects($this->once())
-            ->method('load')
-            ->with(123)
-            ->will($this->returnSelf());
-        
-        $mockLoginLog->expects($this->once())
-            ->method('getCustomerId')
-            ->will($this->returnValue(1));
-        
-        $mockLoginLog->expects($this->once())
-            ->method('registerLogout')
-            ->will($this->returnSelf());
-        
-        $mockLoginLog->expects($this->once())
-            ->method('save')
-            ->will($this->returnSelf());
 
-        $mockCustomer = $this->getModelMock('customer/customer', array('getId'));
-        $mockCustomer->expects($this->once())
-            ->method('getId')
-            ->will($this->returnValue(1));
+        $mockCustomer = $this->getModelMock('customer/customer');
 
         $mockEvent = $this->getMock('Varien_Event_Observer', array('getCustomer'));
         $mockEvent->expects($this->once())
             ->method('getCustomer')
             ->will($this->returnValue($mockCustomer));
+
+        $mockLoginLog = $model->getLoginLog();
+        $mockLoginLog->expects($this->once())
+            ->method('registerLogout')
+            ->with($mockCustomer)
+            ->will($this->returnValue(true));
+        
+        $mockLoginLog->expects($this->once())
+            ->method('save');
 
         $model->customerLogout($mockEvent);
     }

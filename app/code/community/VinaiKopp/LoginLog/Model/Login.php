@@ -53,20 +53,28 @@ class VinaiKopp_LoginLog_Model_Login
     protected $_session;
 
     /**
+     * @var Mage_Core_Helper_Http
+     */
+    protected $_coreHttpHelper;
+
+    /**
      * @param string $date
      * @param VinaiKopp_LoginLog_Helper_Data $helper
      * @param Mage_Customer_Model_Session $session
+     * @param Mage_Core_Helper_Http $httpHelper
      */
     public function __construct(
         $date = null,
         VinaiKopp_LoginLog_Helper_Data $helper = null,
-        Mage_Customer_Model_Session $session = null)
+        Mage_Customer_Model_Session $session = null,
+        Mage_Core_Helper_Http $httpHelper = null)
     {
         if ($date) {
             $this->_dateTime = $date;
         }
         $this->_helper = $helper;
         $this->_session = $session;
+        $this->_coreHttpHelper = $httpHelper;
         parent::__construct();
     }
 
@@ -109,6 +117,19 @@ class VinaiKopp_LoginLog_Model_Login
         return $this->_session;
     }
 
+    /**
+     * @return Mage_Core_Helper_Http
+     */
+    public function getCoreHttpHelper()
+    {
+        if (!$this->_coreHttpHelper) {
+            // @codeCoverageIgnoreStart
+            $this->_coreHttpHelper = Mage::helper('core/http');
+        }
+        // @codeCoverageIgnoreEnd
+        return $this->_coreHttpHelper;
+    }
+
     protected function _construct()
     {
         $this->_init('vinaikopp_loginlog/login');
@@ -129,10 +150,6 @@ class VinaiKopp_LoginLog_Model_Login
      */
     protected function _beforeSave()
     {
-        if ($this->isObjectNew()) {
-            $this->setLoginAt($this->_getCurrentDateTime());
-        }
-        
         $ip = $this->getData('ip');
         $this->setData('ip', $this->_maskIpAddress($ip));
 
@@ -149,11 +166,34 @@ class VinaiKopp_LoginLog_Model_Login
     }
 
     /**
-     * @return VinaiKopp_LoginLog_Model_Login
+     * @param Mage_Customer_Model_Customer $customer
+     * @return bool true
      */
-    public function registerLogout()
+    public function registerLogin(Mage_Customer_Model_Customer $customer)
     {
-        $this->setLogoutAt($this->_getCurrentDateTime());
-        return $this;
+        $helper = $this->getCoreHttpHelper();
+        $this->setCustomerId($customer->getId())
+            ->setEmail($customer->getEmail())
+            ->setIp($helper->getRemoteAddr())
+            ->setUserAgent($helper->getHttpUserAgent())
+            ->setLoginAt($this->_getCurrentDateTime());
+        return true;
+    }
+
+    /**
+     * @param Mage_Customer_Model_Customer $customer
+     * @return bool
+     */
+    public function registerLogout(Mage_Customer_Model_Customer $customer)
+    {
+        $id = $this->getSession()->getData('vinaikopp_loginlog_id');
+        if ($id) {
+            $this->load($id);
+            if ($this->getCustomerId() === $customer->getId()) {
+                $this->setLogoutAt($this->_getCurrentDateTime());
+                return true;
+            }
+        }
+        return false;
     }
 }

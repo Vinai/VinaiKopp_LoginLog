@@ -124,4 +124,4 @@ class VinaiKopp_LoginLog_Test_Model_Resource_Login_CollectionTest
         $instance->addDuration();
         $this->assertColumnPresent('duration', $select);
     }
-} 
+}
