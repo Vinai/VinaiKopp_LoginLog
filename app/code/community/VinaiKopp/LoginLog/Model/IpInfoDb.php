@@ -20,6 +20,7 @@
 
 
 class VinaiKopp_LoginLog_Model_IpInfoDb
+    implements VinaiKopp_LoginLog_Model_LookupInterface
 {
     const XML_CONF_API_KEY = 'vinaikopp_loginlog/lookup_api/ipinfodb_api_key';
 
@@ -116,7 +117,7 @@ class VinaiKopp_LoginLog_Model_IpInfoDb
 
     /**
      * @param $ipAddress
-     * @return SimpleXMLElement
+     * @return array
      * @throws Mage_Core_Exception
      */
     public function lookupIp($ipAddress)
@@ -133,6 +134,7 @@ class VinaiKopp_LoginLog_Model_IpInfoDb
             // @codeCoverageIgnoreStart
         }
         // @codeCoverageIgnoreEnd
-        return $xml;
+        $array = $xml->children();
+        return $array;
     }
 } 

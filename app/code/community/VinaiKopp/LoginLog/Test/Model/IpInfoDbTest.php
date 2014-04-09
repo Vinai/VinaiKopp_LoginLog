@@ -141,6 +141,15 @@ EOT;
     /**
      * @test
      */
+    public function itShouldImplementTheLookupInterface()
+    {
+        $instance = $this->getInstance();
+        $this->assertInstanceOf('VinaiKopp_LoginLog_Model_LookupInterface', $instance);
+    }
+
+    /**
+     * @test
+     */
     public function itShouldHaveAMethodGetApiKey()
     {
         $this->assertTrue(is_callable(array($this->class, 'getApiKey')));

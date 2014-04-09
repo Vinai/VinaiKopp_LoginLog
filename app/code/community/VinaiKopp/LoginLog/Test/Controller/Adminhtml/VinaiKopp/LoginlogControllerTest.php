@@ -40,6 +40,9 @@ class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerT
         
         $helper = new VinaiKopp_LoginLog_Test_TestHelper();
         $helper->prepareAdminRequest();
+        
+        $store = $this->app()->getStore('admin');
+        $store->setConfig('dev/template/allow_symlink', 1);
     }
     
     public function tearDown()
@@ -207,5 +210,55 @@ class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerT
         $this->assertTrue(false !== $this->app()->getLayout()->getBlock('vinaikopp_loginlog.export'));
         $this->assertResponseHeaderContains('Content-Disposition', 'attachment; filename=');
         $this->assertResponseHeaderEquals('Content-Type', 'application/octet-stream');
+    }
+
+    public function testLookupActionExists()
+    {
+        $this->assertTrue(
+            is_callable(array($this->class, 'lookupAction')),
+            "Method lookupAction does not exist on {$this->class}"
+        );
+    }
+    
+    protected function getMockLookupData()
+    {
+        return array(
+            'statusCode' => 'OK',
+            'statusMessage' => '',
+            'ipAddress' => '127.0.0.1',
+            'countryCode' => 'DE',
+            'countryName' => 'Germany',
+            'regionName' => 'NVM',
+            'cityName' => 'Test City',
+            'zipCode' => '123456',
+            'latitude' => '100.100',
+            'longitude' => '-100.000'
+        );
+    }
+
+    /**
+     * @depends testLookupActionExists
+     * @covers ::lookupAction
+     */
+    public function testLookupAction()
+    {
+        $mockLookup = $this->getModelMock('vinaikopp_loginlog/ipInfoDb');
+        $mockLookup->expects($this->once())
+            ->method('lookupIp')
+            ->will($this->returnValue($this->getMockLookupData()));
+        $this->replaceByMock('model', 'vinaikopp_loginlog/ipInfoDb', $mockLookup);
+        
+        $this->dispatch('adminhtml/loginlog/lookup');
+        
+        $this->assertLayoutHandleNotLoaded('default');
+        $this->assertLayoutHandleLoaded('adminhtml_loginlog_lookup');
+        
+        // Check no redirect to 404
+        $this->assertResponseHttpCode(200);
+        
+        $blockName = 'vinaikopp.loginlog.lookup';
+        $this->assertLayoutBlockCreated($blockName);
+        $block = $this->app()->getLayout()->getBlock($blockName);
+        $this->assertTrue((bool) $block->getTemplate());
     }
 } 

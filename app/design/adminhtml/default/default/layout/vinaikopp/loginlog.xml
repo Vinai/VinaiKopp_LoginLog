@@ -21,14 +21,19 @@
 -->
 <config>
     <adminhtml_loginlog_index>
-        <reference name="content">
-            <block name="vinaikopp.loginlog.list"
-                   type="vinaikopp_loginlog/adminhtml_loginLog_list"/>
-        </reference>
+        <block name="vinaikopp.loginlog.list"
+               parent="content"
+               type="vinaikopp_loginlog/adminhtml_loginLog_list"/>
     </adminhtml_loginlog_index>
     <adminhtml_loginlog_grid>
         <block name="vinaikopp.loginlog.grid"
                type="vinaikopp_loginlog/adminhtml_loginLog_list_grid"
                output="toHtml"/>
     </adminhtml_loginlog_grid>
+    <adminhtml_loginlog_lookup>
+        <block name="vinaikopp.loginlog.lookup"
+               type="vinaikopp_loginlog/adminhtml_loginLog_lookup"
+               template="vinaikopp/loginlog/lookup/popup.phtml"
+               output="toHtml"/>
+    </adminhtml_loginlog_lookup>
 </config>

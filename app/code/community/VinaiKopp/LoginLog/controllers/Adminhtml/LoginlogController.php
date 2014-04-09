@@ -92,4 +92,19 @@ class VinaiKopp_LoginLog_Adminhtml_LoginlogController
 
         $this->_prepareDownloadResponse($fileName, $content);
     }
+
+    /**
+     * Display IP reverse DNS and geoip lookup results in a popup
+     */
+    public function lookupAction()
+    {
+        $model = Mage::getModel('vinaikopp_loginlog/login');
+        if ($id = $this->getRequest()->getParam('id')) {
+            $model->load($id);
+        }
+        Mage::register('current_loginlog', $model);
+        
+        $this->loadLayout(false);
+        $this->renderLayout();
+    }
 } 

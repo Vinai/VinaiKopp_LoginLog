@@ -117,6 +117,7 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_List_Grid
                     'actions'  => array(
                         array(
                             'caption' => $this->__('Lookup'),
+                            'popup' => true,
                             'url'     => array(
                                 'base'   => '*/*/lookup',
                                 'params' => array()
