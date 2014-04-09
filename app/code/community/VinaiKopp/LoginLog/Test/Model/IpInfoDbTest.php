@@ -284,7 +284,7 @@ EOT;
      * @test
      * @depends itShouldHaveAMethodLookupIp
      */
-    public function itShouldReturnTheResponseAsAnObject()
+    public function itShouldReturnTheResponseAsAnArray()
     {
         $key = 'dummy-key';
         $ip = '0.0.0.0';
@@ -306,7 +306,7 @@ EOT;
         $response = $obj->lookupIp($ip);
 
         $expected = simplexml_load_string($this->successResponseXml);
-        $this->assertEquals($expected, $response);
+        $this->assertEquals((array) $expected->children(), $response);
     }
 
     /**
@@ -365,5 +365,47 @@ EOT;
             ->will($this->returnValue($key));
 
         $obj->lookupIp($ip);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveAMethodIsLookupAvailable()
+    {
+        $this->assertTrue(is_callable(array($this->class, 'isLookupAvailable')));
+    }
+
+    /**
+     * @test
+     * @depends itShouldHaveAMethodIsLookupAvailable
+     */
+    public function itShouldReturnTrueIfAnApiKeyIsSet()
+    {
+        $instance = $this->getInstance();
+        /** @var PHPUnit_Framework_MockObject_MockObject $store */
+        $store = $instance->getStore();
+        $store->expects($this->any())
+            ->method('getConfig')
+            ->with('vinaikopp_loginlog/lookup_api/ipinfodb_api_key')
+            ->will($this->returnValue('test123'));
+        
+        $this->assertTrue($instance->isLookupAvailable());
+    }
+
+    /**
+     * @test
+     * @depends itShouldHaveAMethodIsLookupAvailable
+     */
+    public function itShouldReturnFalseIfNoApiKeyIsSet()
+    {
+        $instance = $this->getInstance();
+        /** @var PHPUnit_Framework_MockObject_MockObject $store */
+        $store = $instance->getStore();
+        $store->expects($this->any())
+            ->method('getConfig')
+            ->with('vinaikopp_loginlog/lookup_api/ipinfodb_api_key')
+            ->will($this->returnValue(''));
+        
+        $this->assertFalse($instance->isLookupAvailable());
     }
 }

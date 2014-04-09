@@ -148,14 +148,14 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_LookupTest
     /**
      * @test
      */
-    public function itShouldHaveAMethodgetLookupData()
+    public function itShouldHaveAMethodGetLookupData()
     {
         $this->assertTrue(method_exists($this->class, 'getLookupData'));
     }
 
     /**
      * @test
-     * @depends itShouldHaveAMethodgetLookupData
+     * @depends itShouldHaveAMethodGetLookupData
      */
     public function itShouldCallLookupIpOnTheLookupModelIfNotCached()
     {
@@ -175,7 +175,7 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_LookupTest
 
     /**
      * @test
-     * @depends itShouldHaveAMethodgetLookupData
+     * @depends itShouldHaveAMethodGetLookupData
      */
     public function itShouldNotCallLookupIpOnTheLookupModelIfCached()
     {

@@ -9,4 +9,9 @@ interface VinaiKopp_LoginLog_Model_LookupInterface
      * @throws Mage_Core_Exception
      */
     public function lookupIp($ipAddress);
+
+    /**
+     * @return bool
+     */
+    public function isLookupAvailable();
 } 

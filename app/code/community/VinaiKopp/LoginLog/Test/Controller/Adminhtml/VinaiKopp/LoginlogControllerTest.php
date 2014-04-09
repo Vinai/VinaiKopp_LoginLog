@@ -242,15 +242,29 @@ class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerT
      */
     public function testLookupAction()
     {
+        $mockCache = $this->getModelMock('core/cache');
+        $mockCache->expects($this->any())
+            ->method('load')
+            ->will($this->returnValue(false));
+        $this->replaceByMock('model', 'core/cache', $mockCache);
+        
         $mockLookup = $this->getModelMock('vinaikopp_loginlog/ipInfoDb');
         $mockLookup->expects($this->once())
             ->method('lookupIp')
             ->will($this->returnValue($this->getMockLookupData()));
         $this->replaceByMock('model', 'vinaikopp_loginlog/ipInfoDb', $mockLookup);
         
-        $this->dispatch('adminhtml/loginlog/lookup');
+        $mockLookup = $this->getModelMock('vinaikopp_loginlog/login', array('load', 'save', 'delete', 'getIp'));
+        $mockLookup->expects($this->atLeastOnce())
+            ->method('getIp')
+            ->will($this->returnValue('127.0.0.1'));
+        $this->replaceByMock('model', 'vinaikopp_loginlog/login', $mockLookup);
         
-        $this->assertLayoutHandleNotLoaded('default');
+        
+        $this->dispatch('adminhtml/loginlog/lookup', array('id' => 1));
+        
+        
+        $this->assertLayoutHandleLoaded('default');
         $this->assertLayoutHandleLoaded('adminhtml_loginlog_lookup');
         
         // Check no redirect to 404

@@ -134,7 +134,16 @@ class VinaiKopp_LoginLog_Model_IpInfoDb
             // @codeCoverageIgnoreStart
         }
         // @codeCoverageIgnoreEnd
-        $array = $xml->children();
+        $array = (array) $xml->children();
         return $array;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLookupAvailable()
+    {
+        $key = $this->getApiKey();
+        return strlen($key) > 0;
     }
 } 

@@ -31,9 +31,10 @@
                output="toHtml"/>
     </adminhtml_loginlog_grid>
     <adminhtml_loginlog_lookup>
+        <update handle="popup"/>
         <block name="vinaikopp.loginlog.lookup"
+               parent="content"
                type="vinaikopp_loginlog/adminhtml_loginLog_lookup"
-               template="vinaikopp/loginlog/lookup/popup.phtml"
-               output="toHtml"/>
+               template="vinaikopp/loginlog/lookup/popup.phtml"/>
     </adminhtml_loginlog_lookup>
 </config>

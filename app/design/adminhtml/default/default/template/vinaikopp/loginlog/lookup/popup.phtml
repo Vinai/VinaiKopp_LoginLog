@@ -1,3 +1,21 @@
 <?php /** @var VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_Lookup $this */ ?>
-<?php $data = $this->getLookupData() ?>
- 
+<html></html>
+<?php $_ip = $this->getIp() ?>
+<?php if ($this->isValidIp($_ip)): ?>
+    <h3 class="content-header"><?php echo $this->__('Lookup Results for IP Address %s', $_ip) ?></h3>
+    <table>
+    <?php foreach ($this->getLookupData() as $name => $value): ?>
+        <tr>
+            <th><?php echo $this->escapeHtml($this->__($name)) ?>:</th>
+            <td><?php echo $this->escapeHtml($value) ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </table>
+<?php else: ?>
+    <h2><?php echo $this->__('Invalid IP Address: %s', $_ip) ?></h2>
+    <div>
+        <p>
+            <?php $this->__('The IP address can\'t be resolved.') ?>
+        </p>
+    </div>
+<?php endif; ?> 
