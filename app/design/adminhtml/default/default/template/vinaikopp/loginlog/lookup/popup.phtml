@@ -1,5 +1,4 @@
 <?php /** @var VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_Lookup $this */ ?>
-<html></html>
 <?php $_ip = $this->getIp() ?>
 <?php if ($this->isValidIp($_ip)): ?>
     <h3 class="content-header"><?php echo $this->__('Lookup Results for IP Address %s', $_ip) ?></h3>
@@ -12,10 +11,13 @@
     <?php endforeach; ?>
     </table>
 <?php else: ?>
-    <h2><?php echo $this->__('Invalid IP Address: %s', $_ip) ?></h2>
+    <h3 class="content-header"><?php echo $this->__('Invalid IP Address: %s', $_ip) ?></h3>
     <div>
         <p>
-            <?php $this->__('The IP address can\'t be resolved.') ?>
+            <?php echo $this->__('This IP address can\'t be resolved.') ?>
+        </p>
+        <p>
+            <?php echo $this->__('Turn off IP Address masking in the modules system configuration settings to enable lookups for future customer IP addresses.') ?>
         </p>
     </div>
 <?php endif; ?> 
