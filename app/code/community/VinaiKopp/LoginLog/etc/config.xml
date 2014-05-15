@@ -57,6 +57,15 @@
                 </setup>
             </vinaikopp_loginlog_setup>
         </resources>
+        <cache>
+            <types>
+                <vinaikopp_loginlog translate="label,description" module="vinaikopp_loginlog">
+                    <label>Login Log IP Lookups</label>
+                    <description>Customer login IP lookup results.</description>
+                    <tags>vinaikopp_loginlog_lookup</tags>
+                </vinaikopp_loginlog>
+            </types>
+        </cache>
     </global>
     <frontend>
         <events>

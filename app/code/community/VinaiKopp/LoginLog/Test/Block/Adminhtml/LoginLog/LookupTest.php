@@ -29,6 +29,9 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_LookupTest
         
         $mockCache = $this->getModelMock('core/cache');
         $mockCache->expects($this->any())
+            ->method('canUse')
+            ->will($this->returnValue(true));
+        $mockCache->expects($this->any())
             ->method('load')
             ->will($this->returnValue($cached));
         

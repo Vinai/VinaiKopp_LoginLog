@@ -157,11 +157,14 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_Lookup
      */
     protected function _loadLookupCache($ip)
     {
+        $data = '';
         $cache = $this->getCache();
-        $id = $this->_getCacheIdForIp($ip);
-        $data = $cache->load($id);
-        if ($data) {
-            $data = unserialize($data);
+        if ($cache->canUse('vinaikopp_loginlog')) {
+            $id = $this->_getCacheIdForIp($ip);
+            $data = $cache->load($id);
+            if ($data) {
+                $data = unserialize($data);
+            }
         }
         return $data;
     }
