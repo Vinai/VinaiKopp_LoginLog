@@ -252,6 +252,9 @@ class VinaiKopp_LoginLog_Test_Controller_Adminhtml_VinaiKopp_LoginlogControllerT
         $mockLookup->expects($this->once())
             ->method('lookupIp')
             ->will($this->returnValue($this->getMockLookupData()));
+        $mockLookup->expects($this->any())
+            ->method('isLookupAvailable')
+            ->will($this->returnValue(true));
         $this->replaceByMock('model', 'vinaikopp_loginlog/ipInfoDb', $mockLookup);
         
         $mockLookup = $this->getModelMock('vinaikopp_loginlog/login', array('load', 'save', 'delete', 'getIp'));

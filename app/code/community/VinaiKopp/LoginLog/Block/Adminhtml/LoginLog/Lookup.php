@@ -188,8 +188,12 @@ class VinaiKopp_LoginLog_Block_Adminhtml_LoginLog_Lookup
      */
     protected function _lookupIp($ip)
     {
+        $data = array();
         $lookup = $this->getLookupModel();
-        return $lookup->lookupIp($ip);
+        if ($lookup->isLookupAvailable()) {
+            $data = $lookup->lookupIp($ip);
+        }
+        return $data;
     }
 
     /**

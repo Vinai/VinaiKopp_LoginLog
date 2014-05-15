@@ -165,6 +165,9 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_LookupTest
         $ip = $instance->getLoginLog()->getIp();
         /** @var PHPUnit_Framework_MockObject_MockObject $lookup */
         $lookup = $instance->getLookupModel();
+        $lookup->expects($this->any())
+            ->method('isLookupAvailable')
+            ->will($this->returnValue(true));
         $lookup->expects($this->once())
             ->method('lookupIp')
             ->with($ip)
@@ -184,6 +187,9 @@ class VinaiKopp_LoginLog_Test_Block_Adminhtml_LoginLog_LookupTest
         $instance = $this->getInstance($cacheData);
         /** @var PHPUnit_Framework_MockObject_MockObject $lookup */
         $lookup = $instance->getLookupModel();
+        $lookup->expects($this->any())
+            ->method('isLookupAvailable')
+            ->will($this->returnValue(true));
         $lookup->expects($this->never())
             ->method('lookupIp');
         
