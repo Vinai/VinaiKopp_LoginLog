@@ -1,3 +1,7 @@
+# This Magento 1 extension is orphaned, unsupported and no longer maintained.
+
+If you use it, you are effectively adopting the code for your own project.
+
 Customer Login Log
 ==================
 This module logs the date and time, the IP address and the user agent (browser) of customer logins.  
